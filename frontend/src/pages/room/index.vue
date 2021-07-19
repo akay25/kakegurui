@@ -1,31 +1,37 @@
 <template>
-  <div class="card-container">
-    <grid
-      :draggable="false"
-      :sortable="true"
-      :items="cards"
-      :height="(cardHeight + 5) * 10"
-      :width="(cardWidth + 5) * 5"
-      :cellWidth="cardWidth + 5"
-      :cellHeight="cardHeight + 5"
-      @dragstart="dragging = true"
-      @dragend="dragging = false"
-    >
-      <template v-slot:cell="props">
-        <card
-          :class="props.index === selectedID ? selectedCardClass : ''"
-          :height="cardHeight"
-          :width="cardWidth"
-          :frontImage="cover"
-          :backImage="props.item.image"
-          :index="props.index"
-          :flipEnabled="!isFlipped || props.index === selectedID"
-          @flip="handleFlip"
-          @wrongCard="handleWrongCard"
-        />
-      </template>
-    </grid>
-    <va-button @click="shuffleArray">Shuffle</va-button>
+  <div class="flex">
+    <div class="row ">
+      <div class="flex xs2">
+        <va-button @click="shuffleArray">Shuffle</va-button>
+      </div>
+    </div>
+    <div class="card-container">
+      <grid
+        :draggable="false"
+        :sortable="true"
+        :items="cards"
+        :height="(cardHeight + 5) * 10"
+        :width="(cardWidth + 5) * 5"
+        :cellWidth="cardWidth + 5"
+        :cellHeight="cardHeight + 5"
+        @dragstart="dragging = true"
+        @dragend="dragging = false"
+      >
+        <template v-slot:cell="props">
+          <card
+            :class="props.index === selectedID ? selectedCardClass : 'on-hover'"
+            :height="cardHeight"
+            :width="cardWidth"
+            :frontImage="cover"
+            :backImage="props.item.image"
+            :index="props.index"
+            :flipEnabled="!isFlipped || props.index === selectedID"
+            @flip="handleFlip"
+            @wrongCard="handleWrongCard"
+          />
+        </template>
+      </grid>
+    </div>
   </div>
 </template>
 
@@ -46,6 +52,24 @@ const cards = [
   },
   {
     image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/081.png"
+  },
+  {
+    image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/081.png"
+  },
+  {
+    image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/081.png"
+  },
+  {
+    image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/081.png"
+  },
+  {
+    image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/081.png"
+  },
+  {
+    image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/081.png"
+  },
+  {
+    image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/081.png"
   }
 ];
 export default {
@@ -57,7 +81,7 @@ export default {
   data() {
     return {
       cover: "https://pngimg.com/uploads/pokemon_logo/pokemon_logo_PNG12.png",
-      cards: cards,
+      cards: cards.splice(6),
       cardHeight: 160,
       cardWidth: 120,
       dragging: false,
@@ -99,14 +123,30 @@ export default {
 
 <style scoped>
 .on-hover {
-  border: 1px solid black;
+  transition: 400 ease;
+}
+
+.on-hover:hover {
+  border-radius: 5px;
+  border: 1px solid #9b9797;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.card-container {
+  border: 2px dashed #14213d;
+  padding: 10px;
+  margin: 20px;
+  border-radius: 5px;
+  overflow-y: hidden;
 }
 
 .wrong-card {
   border-radius: 5px;
   border: 1px solid rgba(255, 20, 17, 0.48);
-  box-shadow: rgba(255, 20, 17, 0.48) 6px 2px 16px 0px,
-    rgba(255, 255, 255, 0.8) -6px -20px 16px 0px;
+
+  box-shadow: 0px 0px 3px 3px rgba(255, 20, 17, 0.48);
+  -webkit-box-shadow: 0px 0px 3px 3px rgba(255, 20, 17, 0.48);
+  -moz-box-shadow: 0px 0px 3px 3px rgba(255, 20, 17, 0.48);
 
   animation: shake 0.5s;
   animation-iteration-count: 1;
