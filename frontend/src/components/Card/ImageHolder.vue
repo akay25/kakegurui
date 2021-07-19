@@ -15,7 +15,7 @@ export default {
 
 <style>
 .image-holder {
-  display: flex;
+  display: inline-flex;
   width: 100%;
   height: auto;
 }
