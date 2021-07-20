@@ -1,11 +1,16 @@
 <template>
   <div class="flex">
-    <div class="row ">
-      <div class="flex xs2">
-        <va-button @click="shuffleArray">Shuffle</va-button>
-      </div>
-    </div>
     <div class="board-container">
+      <div class="row">
+        <div class="flex xs12">
+          <va-progress-bar :modelValue="99"></va-progress-bar>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex xs2">
+          <va-button @click="shuffleArray">Shuffle</va-button>
+        </div>
+      </div>
       <board :cards="cards" :cover="cover" />
     </div>
   </div>
