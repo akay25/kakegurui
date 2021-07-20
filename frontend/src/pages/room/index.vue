@@ -114,5 +114,6 @@ export default {
   margin: 20px;
   border-radius: 12px;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 </style>
