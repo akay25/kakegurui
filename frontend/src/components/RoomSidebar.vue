@@ -22,8 +22,11 @@
         </h1>
       </div>
     </div>
-    <div class="player-container">
+    <div class="row player-container">
       <player v-for="i in [1, 2, 3, 4, 5, 6]" :key="i" />
+    </div>
+    <div class="leave-game-button-holder">
+      <va-button size="large" icon="close" color="danger">Leave Game</va-button>
     </div>
   </va-sidebar>
 </template>
@@ -92,6 +95,13 @@ export default {
   justify-content: center;
   align-items: center;
   margin: 10px;
+}
+
+.leave-game-button-holder {
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .va-sidebar {
