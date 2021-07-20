@@ -78,12 +78,13 @@ i.backFlipBtn {
   -moz-perspective: 1000;
   -o-perspective: 1000;
   perspective: 1000;
+  margin: 5px;
 }
 .flipper {
   -moz-transform: perspective(1000px);
   -moz-transform-style: preserve-3d;
   position: relative;
-  display: flex;
+  display: inline-block;
   height: 100%;
 }
 .slot-container {

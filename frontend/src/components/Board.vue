@@ -1,59 +1,35 @@
 <template>
   <div>
-    <transition-group name="flip-list" tag="ul">
-      <img
-        v-for="item in cards"
-        :key="item"
-        :src="item.image"
-        style="border: 1px solid green; width: 120px; height: 160px; margin: 5px;"
-      />
-      <!-- <card
-        class="card"
-        v-for="(card, index) in cards"
-        :key="index"
-        :class="index === selectedID ? selectedCardClass : 'on-hover'"
-        :height="cardHeight"
-        :width="cardWidth"
-        :frontImage="cover"
-        :backImage="card.image"
-        :index="index"
-        :flipEnabled="!isFlipped || index === selectedID"
-        @flip="handleFlip"
-        @wrongCard="handleWrongCard"
-      /> -->
-    </transition-group>
-    <!-- <transition-group name="list-complete" tag="div">
-      <card
-        class="card"
-        v-for="(card, index) in cards"
-        :key="index"
-        :class="index === selectedID ? selectedCardClass : 'on-hover'"
-        :height="cardHeight"
-        :width="cardWidth"
-        :frontImage="cover"
-        :backImage="card.image"
-        :index="index"
-        :flipEnabled="!isFlipped || index === selectedID"
-        @flip="handleFlip"
-        @wrongCard="handleWrongCard"
-      /> 
-      <span
+    <transition-group name="flip-list" tag="div">
+      <div
         v-for="(item, index) in cards"
-        :key="index"
-        class="list-complete-item"
+        :key="item"
+        style="display: inline-block;"
       >
-        {{ item.image }}
-      </span>
-    </transition-group> -->
+        <card
+          :class="index === selectedID ? selectedCardClass : 'on-hover'"
+          :height="cardHeight"
+          :width="cardWidth"
+          :frontImage="cover"
+          :backImage="item.image"
+          :index="index"
+          :flipEnabled="!isFlipped || index === selectedID"
+          @flip="handleFlip"
+          @wrongCard="handleWrongCard"
+        />
+      </div>
+    </transition-group>
   </div>
 </template>
 
 <script>
 import Card from "@/components/Card/index.vue";
+import ImageHolder from "@/components/Card/ImageHolder.vue";
 export default {
   name: "board",
   components: {
-    Card
+    Card,
+    ImageHolder
   },
   props: {
     cards: {
@@ -113,20 +89,6 @@ export default {
 <style lang="scss">
 .flip-list-move {
   transition: transform 0.8s ease;
-}
-
-.list-complete-item {
-  transition: all 1s;
-  display: inline-block;
-  margin-right: 10px;
-}
-.list-complete-enter, .list-complete-leave-to
-/* .list-complete-leave-active below version 2.1.8 */ {
-  opacity: 0;
-  transform: translateY(30px);
-}
-.list-complete-leave-active {
-  position: absolute;
 }
 
 .deck {
