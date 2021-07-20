@@ -3,7 +3,7 @@
     <!--- all random :) ---->
     <avataaars></avataaars>
 
-    <!--- with some props ---->
+    <!-- - with some props --
     <avataaars
       :clotheType="'GraphicShirt'"
       :eyebrowType="'Angry'"
@@ -12,7 +12,7 @@
       :facialHairColor="'Blonde'"
       :graphicType="'Cumbia'"
     >
-    </avataaars>
+    </avataaars> -->
   </div>
 </template>
 

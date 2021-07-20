@@ -6,7 +6,7 @@
   >
     <div class="row">
       <div class="xs2">
-        <h1 class="display-1 heading-font" style="width: 100%;">
+        <h1 class="display-1 heading-font" style="margin: 10px; width: 100%;">
           Score
         </h1>
       </div>
@@ -17,8 +17,8 @@
     </div>
     <div class="row">
       <div class="xs2">
-        <h1 class="display-1 heading-font" style="width: 100%;">
-          Score
+        <h1 class="display-1 heading-font" style="margin: 10px; width: 100%;">
+          Players
         </h1>
       </div>
     </div>
