@@ -51,7 +51,9 @@ export default {
     handleFlip(event) {
       if (event === -1) {
         this.$emit("wrongCard", { currentCardId: this.index });
-      } else this.$emit("flip", { id: this.index, val: event });
+      } else {
+        this.$emit("flip", { id: this.index, val: event });
+      }
     }
   }
 };

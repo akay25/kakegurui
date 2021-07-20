@@ -12623,6 +12623,11 @@ vue@^3.0.0, vue@^3.0.4:
     "@vue/runtime-dom" "3.0.5"
     "@vue/shared" "3.0.5"
 
+vuejs-avataaars@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/vuejs-avataaars/-/vuejs-avataaars-4.0.1.tgz#024d6b2dc4eefe97ffa4a05e2e288d4b95034d2c"
+  integrity sha512-XFpPtk1EJ8DRhJlLwEogCpOf7DMQdMjQgii2nJjZLLLaOqtOzSO4XCWklgwcd/xzjG2OGmuhvlIp3BoX5vZBMg==
+
 vuestic-ui@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/vuestic-ui/-/vuestic-ui-1.1.1.tgz#0e5cb96b2b9ac5d4fad7fb23a56caa3a917fa752"

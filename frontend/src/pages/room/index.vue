@@ -6,11 +6,6 @@
           <va-progress-bar :modelValue="99"></va-progress-bar>
         </div>
       </div>
-      <div class="row">
-        <div class="flex xs2">
-          <va-button @click="shuffleArray">Shuffle</va-button>
-        </div>
-      </div>
       <board :cards="cards" :cover="cover" />
     </div>
   </div>
@@ -75,6 +70,8 @@ const cards = [
   { image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/052.png" }
 ];
 
+const CARDS = _.shuffle(_.concat(cards, cards));
+
 export default {
   name: "room",
   components: {
@@ -83,27 +80,15 @@ export default {
   data() {
     return {
       cover: "https://pngimg.com/uploads/pokemon_logo/pokemon_logo_PNG12.png",
-      cards: cards,
+      cards: CARDS.splice(52),
       shuffleTimer: null
     };
   },
-  mounted() {
-    // this.startTimer();
-  },
-  methods: {
-    shuffleArray() {
-      this.cards = _.shuffle(cards);
-    },
-    startTimer() {
-      const self = this;
-      this.shuffleTimer = setInterval(function() {
-        self.shuffleArray();
-        console.log("arary shuffled");
-      }, 3000);
-    }
-  },
+  methods: {},
   beforeUnmount() {
-    if (this.shuffleTimer) clearInterval(this.shuffleTimer);
+    if (this.shuffleTimer) {
+      clearInterval(this.shuffleTimer);
+    }
   }
 };
 </script>

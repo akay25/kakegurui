@@ -4,10 +4,26 @@
     :minimized="minimized"
     :minimizedWidth="minimizedWidth"
   >
-    <div class="container">
-      <h1 class="display-1 heading-font">Score</h1>
+    <div class="row">
+      <div class="xs2">
+        <h1 class="display-1 heading-font" style="width: 100%;">
+          Score
+        </h1>
+      </div>
+    </div>
+    <div class="row container">
       <filp-number :value="counter" :speed="600" :digitCount="2" />
       <va-button @click="inc">Click Me</va-button>
+    </div>
+    <div class="row">
+      <div class="xs2">
+        <h1 class="display-1 heading-font" style="width: 100%;">
+          Score
+        </h1>
+      </div>
+    </div>
+    <div class="player-container">
+      <player v-for="i in [1, 2, 3, 4, 5, 6]" :key="i" />
     </div>
   </va-sidebar>
 </template>
@@ -15,11 +31,13 @@
 <script>
 import { useGlobalConfig } from "vuestic-ui";
 import FilpNumber from "@/components/FlipNumber";
+import Player from "./Player";
 
 export default {
   name: "room-sidebar",
   components: {
-    FilpNumber
+    FilpNumber,
+    Player
   },
   props: {
     width: { type: String, default: "16rem" },
@@ -49,10 +67,6 @@ export default {
   methods: {
     inc() {
       this.counter++;
-      // if (this.counter <= 8) this.counter++;
-      // else {
-      //   this.counter = 0;
-      // }
     }
   }
 };
@@ -73,6 +87,13 @@ export default {
 </style>
 
 <style lang="scss">
+.player-container {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
 .va-sidebar {
   flex-shrink: 0;
   box-shadow: 3px 1px 12px -7px rgba(0, 0, 0, 0.74);
