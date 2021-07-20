@@ -4,9 +4,11 @@
     :minimized="minimized"
     :minimizedWidth="minimizedWidth"
   >
-    <h1 class="display-1 heading-font">Score</h1>
-    <filp-number :value="counter" :speed="600" :digitCount="2" />
-    <va-button @click="inc">Click Me</va-button>
+    <div class="container">
+      <h1 class="display-1 heading-font">Score</h1>
+      <filp-number :value="counter" :speed="600" :digitCount="2" />
+      <va-button @click="inc">Click Me</va-button>
+    </div>
   </va-sidebar>
 </template>
 
@@ -56,8 +58,27 @@ export default {
 };
 </script>
 
+<style lang="scss" scoped>
+.container {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container > * {
+  margin: 10px;
+}
+</style>
+
 <style lang="scss">
 .va-sidebar {
+  flex-shrink: 0;
+  box-shadow: 3px 1px 12px -7px rgba(0, 0, 0, 0.74);
+  -webkit-box-shadow: 3px 1px 12px -7px rgba(0, 0, 0, 0.74);
+  -moz-box-shadow: 3px 1px 12px -7px rgba(0, 0, 0, 0.74);
+
   .va-collapse__body {
     margin-top: 0 !important;
   }
@@ -83,14 +104,4 @@ export default {
     }
   }
 }
-</style>
-
-<style lang="scss" scoped>
-.va-sidebar {
-  flex-shrink: 0;
-}
-
-// .va-sidebar--minimized {
-//   width: auto !important;
-// }
 </style>
