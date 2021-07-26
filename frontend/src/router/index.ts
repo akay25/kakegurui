@@ -1,16 +1,27 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import AuthLayout from "@/layout/auth-layout.vue";
-import AppLayout from "@/layout/app-layout.vue";
 import RoomLayout from "@/layout/room-layout.vue";
 import Page404Layout from "@/layout/page-404-layout.vue";
-
-import RouteViewComponent from "./route-view.vue";
-import UIRoute from "@/pages/admin/ui/route";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/:catchAll(.*)",
     redirect: { name: "homepage" }
+  },
+  {
+    path: "/",
+    component: Page404Layout,
+    children: [
+      {
+        name: "home",
+        path: "",
+        component: () => import("@/pages/home/index.vue")
+      },
+      {
+        name: "join",
+        path: "/:roomID",
+        component: () => import("@/pages/home/index.vue")
+      }
+    ]
   },
   {
     path: "/room",
