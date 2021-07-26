@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="row player-container">
-      <player v-for="i in [1, 2, 3, 4, 5, 6]" :key="i" />
+      <!-- <player v-for="i in [1, 2, 3, 4, 5, 6]" :key="i" /> -->
     </div>
     <div class="leave-game-button-holder">
       <va-button size="large" icon="close" color="danger">Leave Game</va-button>
