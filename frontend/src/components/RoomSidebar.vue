@@ -26,7 +26,9 @@
       <!-- <player v-for="i in [1, 2, 3, 4, 5, 6]" :key="i" /> -->
     </div>
     <div class="leave-game-button-holder">
-      <va-button size="large" icon="close" color="danger">Leave Game</va-button>
+      <va-button size="large" icon="close" color="danger" @click="leaveGroup"
+        >Leave Game</va-button
+      >
     </div>
   </va-sidebar>
 </template>
@@ -35,6 +37,7 @@
 import { useGlobalConfig } from "vuestic-ui";
 import FilpNumber from "@/components/FlipNumber";
 import Player from "./Player";
+import { removeDetails } from "@/utils/utils";
 
 export default {
   name: "room-sidebar",
@@ -70,6 +73,9 @@ export default {
   methods: {
     inc() {
       this.counter++;
+    },
+    leaveGroup() {
+      removeDetails();
     }
   }
 };

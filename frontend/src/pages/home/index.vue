@@ -51,7 +51,7 @@
 import _ from "lodash";
 import { nameByRace } from "fantasy-name-generator";
 import axios from "@/api";
-import { saveDetails } from "@/utils/utils";
+import { saveDetails, getPlayerInfo } from "@/utils/utils";
 export default {
   name: "home",
   data() {
@@ -65,6 +65,11 @@ export default {
     };
   },
   async created() {
+    const playerInfo = getPlayerInfo();
+    if (playerInfo !== null) {
+      this.personName = playerInfo.name;
+      this.profilePicCode = playerInfo.profilePic;
+    }
     const validRoomID = await this.validateRoomID(this.roomID);
     if (this.roomID !== undefined && !validRoomID) {
       this.roomID = null;
@@ -102,7 +107,7 @@ export default {
         const player = data.player;
 
         saveDetails(room, player, userToken);
-        this.$router.push({ path: `/room/${this.roomID}` });
+        this.$router.push({ path: `/room/${room.name}` });
       } catch (e) {
         alert(`Failed to create room`);
       }
@@ -121,7 +126,7 @@ export default {
         const player = data.player;
 
         saveDetails(room, player, userToken);
-        this.$router.push({ path: `/room/${this.roomID}` });
+        this.$router.push({ path: `/room/${room.name}` });
       } catch (e) {
         console.log(e);
         alert(`Failed to join room with name: ${this.roomID}`);
