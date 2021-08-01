@@ -68,7 +68,7 @@ export default {
     // Check for token and room id to make sure user is not doing double entry
     const token = getToken();
     const existingRoom = getRoom();
-    if (this.validateRoomID(existingRoom.name) && token) {
+    if (!!existingRoom && !!token && this.validateRoomID(existingRoom.name)) {
       this.$router.push({ path: `/room/${existingRoom.name}` });
     }
 

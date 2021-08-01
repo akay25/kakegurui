@@ -1,25 +1,23 @@
 <template>
   <va-page-not-found class="va-page-not-found-simple">
     <template #image>
-      <vuestic-logo />
+      <!-- Some logo here -->
     </template>
-    <va-button :to="{name: 'dashboard'}">
-      Back to dashboard
+    <va-button :to="{ name: 'home' }">
+      Back to home
     </va-button>
   </va-page-not-found>
 </template>
 
 <script>
-import VuesticLogo from '@/components/vuestic-logo'
-import VaPageNotFound from './VaPageNotFound'
+import VaPageNotFound from "./VaPageNotFound";
 
 export default {
-  name: 'vuestic-page-not-found-simple',
+  name: "vuestic-page-not-found-simple",
   components: {
-    VaPageNotFound,
-    VuesticLogo,
-  },
-}
+    VaPageNotFound
+  }
+};
 </script>
 
 <style lang="scss">
