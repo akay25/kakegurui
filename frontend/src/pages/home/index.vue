@@ -85,12 +85,14 @@ export default {
     }
 
     // Check if the given room ID is valid or not
-    validRoomID = await this.validateRoomID(this.roomID);
-    if (this.roomID !== undefined && !validRoomID) {
-      this.roomID = null;
-      alert("Invalid room ID");
-      this.$router.push("/");
-    } else if (this.roomID === undefined) {
+    if (this.roomID !== undefined) {
+      validRoomID = await this.validateRoomID(this.roomID);
+      if (!validRoomID) {
+        this.roomID = null;
+        alert("Invalid room ID");
+        this.$router.push("/");
+      }
+    } else {
       this.roomID = null;
     }
   },
