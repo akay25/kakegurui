@@ -16,15 +16,9 @@
 
 <script>
 import _ from "lodash";
+import { mapGetters, mapMutations } from "vuex";
 import Board from "@/components/Board.vue";
 import axios from "@/api";
-import {
-  saveDetails,
-  getPlayerInfo,
-  getToken,
-  getRoom,
-  removeDetails
-} from "@/utils/utils";
 
 const cards = [
   { image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png" },
@@ -100,9 +94,11 @@ export default {
   computed: {
     isGameRunning() {
       return this.room !== null && this.room.status === "playing";
-    }
+    },
+    ...mapGetters(["playerId"])
   },
   async created() {
+    console.log("ssds");
     const validRoomID = await this.validateRoomID(this.roomID);
     if (!validRoomID) {
       alert("Invalid room ID");
@@ -116,7 +112,11 @@ export default {
     // Wait for other users
     // Start game button
   },
+  mounted() {
+    alert("afaf");
+  },
   methods: {
+    ...mapMutations(["setLoading"]),
     async validateRoomID() {
       if (!!this.roomID) {
         this.apiLoading = true;

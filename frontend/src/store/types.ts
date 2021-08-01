@@ -9,6 +9,7 @@ export interface PlayerState {
   profilePic: string;
   score: Number;
   owner: Boolean;
+  token: String;
 }
 
 export interface RootState {

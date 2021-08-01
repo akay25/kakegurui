@@ -10,11 +10,11 @@
             <div class="flex md8 justify--center">
               <div class="flex md6">
                 <va-input
-                  v-model="personName"
+                  v-model="player.name"
                   placeholder="Your name"
                   label="Player name"
                   required
-                  :disabled="apiLoading"
+                  :disabled="isLoading"
                 />
               </div>
               <br />
@@ -25,7 +25,7 @@
                 size="large"
                 v-if="roomID"
                 @click="joinRoom"
-                :disabled="apiLoading"
+                :disabled="isLoading"
               >
                 Join room</va-button
               >
@@ -35,7 +35,7 @@
                 size="large"
                 v-else
                 @click="createRoom"
-                :disabled="apiLoading"
+                :disabled="isLoading"
               >
                 Create room</va-button
               >
@@ -49,34 +49,37 @@
 
 <script>
 import _ from "lodash";
+import { mapGetters, mapMutations } from "vuex";
 import { nameByRace } from "fantasy-name-generator";
 import axios from "@/api";
-import { saveDetails, getPlayerInfo, getToken, getRoom } from "@/utils/utils";
+import { getPlayerInfo } from "@/utils";
+
 export default {
   name: "home",
   data() {
     return {
-      apiLoading: false,
       roomID: this.$route.params.roomID,
-      personName: nameByRace("human", {
-        gender: _.sample(["male", "female"])
-      }),
-      profilePicCode: "1-5-8"
+      player: {
+        name: nameByRace("human", {
+          gender: _.sample(["male", "female"])
+        }),
+        profilePic: "1-5-7"
+      }
     };
   },
+  computed: {
+    ...mapGetters(["isLoading", "playerId", "token", "name", "profilePic"])
+  },
   async created() {
-    // Check for token and room id to make sure user is not doing double entry
-    const token = getToken();
-    const existingRoom = getRoom();
-    if (!!existingRoom && !!token && this.validateRoomID(existingRoom.name)) {
-      this.$router.push({ path: `/room/${existingRoom.name}` });
-    }
-
-    // Get player info if user is already created
-    const playerInfo = getPlayerInfo();
-    if (playerInfo !== null) {
-      this.personName = playerInfo.name;
-      this.profilePicCode = playerInfo.profilePic;
+    // Check for existing player storage
+    if (!!this.token) {
+      // Check for token and room id to make sure user is not doing double entry
+      // const existingRoom = getRoom();
+      // if (!!existingRoom && this.validateRoomID(existingRoom.name)) {
+      //   this.$router.push({ path: `/room/${existingRoom.name}` });
+      // } else {
+      // Clear everything and continue down
+      // }
     }
 
     // Check if the given room ID is valid or not
@@ -87,9 +90,22 @@ export default {
       this.$router.push("/");
     } else if (this.roomID === undefined) {
       this.roomID = null;
+    } else {
+      // TODO: Write the room ID to instance
+    }
+
+    // Check for player and initialise it
+    const playerInfo = getPlayerInfo();
+    if (playerInfo !== null) {
+      // Load old name and set default value
+      this.player = {
+        name: playerInfo.name,
+        profilePic: playerInfo.profilePic
+      };
     }
   },
   methods: {
+    ...mapMutations(["setLoading", "setRoom", "setPlayer", "setToken"]),
     async validateRoomID() {
       if (!!this.roomID) {
         this.apiLoading = true;
@@ -105,23 +121,20 @@ export default {
       return false;
     },
     async createRoom() {
-      this.apiLoading = true;
+      this.setLoading(true);
       try {
-        const { data } = await axios.post(`/rooms/create`, {
-          name: this.personName,
-          profilePic: this.profilePicCode
-        });
+        const { data } = await axios.post(`/rooms/create`, this.player);
 
-        const room = data.room;
-        const userToken = data.token;
-        const player = data.player;
-
-        saveDetails(room, player, userToken);
-        this.$router.push({ path: `/room/${room.name}` });
+        this.setRoom(data.room);
+        this.setPlayer(data.player);
+        this.setToken(data.token);
+        console.log("everything is set");
+        console.log(data);
+        // this.$router.push({ path: `/room/${room.name}` });
       } catch (e) {
         alert(`Failed to create room`);
       }
-      this.apiLoading = false;
+      this.setLoading(false);
     },
     async joinRoom() {
       this.apiLoading = true;
@@ -132,12 +145,13 @@ export default {
           profilePic: this.profilePicCode
         });
 
-        const room = data.room;
-        const userToken = data.token;
-        const player = data.player;
+        this.setRoom(data.room);
+        this.setPlayer(data.player);
+        this.setToken(data.token);
+        console.log("everything is set");
+        console.log(data);
 
-        saveDetails(room, player, userToken);
-        this.$router.push({ path: `/room/${room.name}` });
+        // this.$router.push({ path: `/room/${room.name}` });
       } catch (e) {
         console.log(e);
         alert(`Failed to join room with name: ${this.roomID}`);

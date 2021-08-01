@@ -37,7 +37,7 @@
 import { useGlobalConfig } from "vuestic-ui";
 import FilpNumber from "@/components/FlipNumber";
 import Player from "./Player";
-import { removeDetails } from "@/utils/utils";
+import { removeDetails } from "@/utils";
 
 export default {
   name: "room-sidebar",
