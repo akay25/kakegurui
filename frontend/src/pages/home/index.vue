@@ -51,7 +51,7 @@
 import _ from "lodash";
 import { nameByRace } from "fantasy-name-generator";
 import axios from "@/api";
-import { saveDetails, getPlayerInfo } from "@/utils/utils";
+import { saveDetails, getPlayerInfo, getToken, getRoom } from "@/utils/utils";
 export default {
   name: "home",
   data() {
@@ -65,11 +65,21 @@ export default {
     };
   },
   async created() {
+    // Check for token and room id to make sure user is not doing double entry
+    const token = getToken();
+    const existingRoom = getRoom();
+    if (this.validateRoomID(existingRoom.name) && token) {
+      this.$router.push({ path: `/room/${existingRoom.name}` });
+    }
+
+    // Get player info if user is already created
     const playerInfo = getPlayerInfo();
     if (playerInfo !== null) {
       this.personName = playerInfo.name;
       this.profilePicCode = playerInfo.profilePic;
     }
+
+    // Check if the given room ID is valid or not
     const validRoomID = await this.validateRoomID(this.roomID);
     if (this.roomID !== undefined && !validRoomID) {
       this.roomID = null;
