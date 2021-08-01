@@ -1,12 +1,15 @@
 <template>
   <div class="flex">
-    <div class="board-container">
+    <div class="board-container" v-if="isGameRunning">
       <div class="row">
         <div class="flex xs12">
           <va-progress-bar :modelValue="99"></va-progress-bar>
         </div>
       </div>
       <board :cards="cards" :cover="cover" />
+    </div>
+    <div class="board-container" v-else>
+      {{ roomID }}
     </div>
   </div>
 </template>
@@ -93,6 +96,11 @@ export default {
       cover: "https://pngimg.com/uploads/pokemon_logo/pokemon_logo_PNG12.png",
       cards: CARDS.splice(52)
     };
+  },
+  computed: {
+    isGameRunning() {
+      return this.room !== null && this.room.status === "playing";
+    }
   },
   async created() {
     const validRoomID = await this.validateRoomID(this.roomID);
