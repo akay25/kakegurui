@@ -1,9 +1,17 @@
-export const saveDetails = (room, player, token) => {
-  localStorage.setItem("room", JSON.stringify(room));
-  localStorage.setItem("player", JSON.stringify(player));
-  localStorage.setItem("roomID", room.id);
-  localStorage.setItem("isRoomOwner", player.owner);
-  localStorage.setItem("token", token);
+export const saveDetails = (room = null, player = null, token = null) => {
+  if (room !== null) {
+    localStorage.setItem("room", JSON.stringify(room));
+    localStorage.setItem("roomID", room.id);
+  }
+
+  if (player !== null) {
+    localStorage.setItem("player", JSON.stringify(player));
+    localStorage.setItem("isRoomOwner", player.owner);
+  }
+
+  if (token !== null) {
+    localStorage.setItem("token", token);
+  }
 };
 
 export const removeDetails = () => {

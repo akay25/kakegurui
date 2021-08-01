@@ -14,6 +14,14 @@
 <script>
 import _ from "lodash";
 import Board from "@/components/Board.vue";
+import axios from "@/api";
+import {
+  saveDetails,
+  getPlayerInfo,
+  getToken,
+  getRoom,
+  removeDetails
+} from "@/utils/utils";
 
 const cards = [
   { image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png" },
@@ -79,15 +87,43 @@ export default {
   },
   data() {
     return {
+      roomID: this.$route.params.roomID,
+      room: null,
+      apiLoading: false,
       cover: "https://pngimg.com/uploads/pokemon_logo/pokemon_logo_PNG12.png",
-      cards: CARDS.splice(52),
-      shuffleTimer: null
+      cards: CARDS.splice(52)
     };
   },
-  methods: {},
-  beforeUnmount() {
-    if (this.shuffleTimer) {
-      clearInterval(this.shuffleTimer);
+  async created() {
+    const validRoomID = await this.validateRoomID(this.roomID);
+    if (!validRoomID) {
+      alert("Invalid room ID");
+      removeDetails();
+      this.$router.push("/");
+    }
+
+    // Create and connect to socket room here
+    // TODO: Create/connect to socket until others join
+    // If socket connect to room fails using the auth then redirect
+    // Wait for other users
+    // Start game button
+  },
+  methods: {
+    async validateRoomID() {
+      if (!!this.roomID) {
+        this.apiLoading = true;
+        try {
+          const response = await axios(`/rooms/${this.roomID}`);
+          this.room = response.data;
+          saveDetails(this.room);
+          this.apiLoading = false;
+          return response.data.name === this.roomID;
+        } catch (e) {
+          console.log(e);
+        }
+        this.apiLoading = false;
+      }
+      return false;
     }
   }
 };
