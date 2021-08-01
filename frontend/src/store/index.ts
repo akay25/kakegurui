@@ -1,17 +1,23 @@
-import { createStore } from "vuex";
+import Vuex, { StoreOptions } from "vuex";
+import { RootState } from "./types";
+import modules from "./modules";
+import mutations from "./mutations";
+import getters from "./getters";
+import actions from "./actions";
 
-export default createStore({
-  strict: true, // process.env.NODE_ENV !== 'production',
+const store: StoreOptions<RootState> = {
   state: {
+    strict: true,
+    version: "1.0.0", // a simple property
     isSidebarMinimized: false,
-    userName: "Vasili S"
+    isLoading: false
   },
-  mutations: {
-    updateSidebarCollapsedState(state, isSidebarMinimized) {
-      state.isSidebarMinimized = isSidebarMinimized;
-    },
-    changeUserName(state, newUserName) {
-      state.userName = newUserName;
-    }
-  }
-});
+  modules: {
+    ...modules
+  },
+  mutations,
+  actions,
+  getters
+};
+
+export default new Vuex.Store<RootState>(store);
