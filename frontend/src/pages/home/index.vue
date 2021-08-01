@@ -33,36 +33,55 @@
 </template>
 
 <script>
+import _ from "lodash";
+import { nameByRace } from "fantasy-name-generator";
+import axios from "@/api";
 export default {
   name: "home",
   data() {
     return {
       roomID: null,
-      personName: ""
+      personName: "",
+      profilePicCode: "1-5-8"
     };
   },
-  created() {
+  async created() {
+    this.personName = nameByRace("human", {
+      gender: _.sample(["male", "female"])
+    });
+
     this.roomID = this.$route.params.roomID;
-    if (this.roomID !== undefined && !this.validateRoomID(this.roomID)) {
-      this.roomID = false;
+    const validRoomID = await this.validateRoomID(this.roomID);
+    if (this.roomID !== undefined && !validRoomID) {
+      this.roomID = null;
       alert("Invalid room ID");
+      this.$router.push("/");
     } else if (this.roomID === undefined) {
       this.roomID = null;
     }
   },
   methods: {
-    validateRoomID() {
+    async validateRoomID() {
       if (!!this.roomID) {
-        //TODO: Make api call to make sure room is available
-        return true;
+        try {
+          const response = await axios(`/rooms/${this.roomID}`);
+          return response.data.name === this.roomID;
+        } catch (e) {
+          console.log(e);
+        }
       }
       return false;
     },
     createRoom() {
       // TODO: Create new room api call
     },
-    joinRoom() {
-      // TODO: Join new room api call
+    async joinRoom() {
+      try {
+        const response = await axios();
+        console.log(response);
+      } catch (e) {
+        alert(`Failed to join room with name: ${this.roomID}`);
+      }
     }
   }
 };
