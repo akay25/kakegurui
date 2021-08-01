@@ -35,9 +35,11 @@
 
 <script>
 import { useGlobalConfig } from "vuestic-ui";
+import axios from "@/api";
 import FilpNumber from "@/components/FlipNumber";
 import Player from "./Player";
 import { clearLocalStorage } from "@/utils";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "room-sidebar",
@@ -68,14 +70,37 @@ export default {
     },
     colors() {
       return useGlobalConfig().getGlobalConfig().colors;
-    }
+    },
+    ...mapGetters(["isLoading", "playerId", "roomName", "token"])
   },
   methods: {
+    ...mapMutations(["setLoading"]),
     inc() {
       this.counter++;
     },
-    leaveGroup() {
-      // clearLocalStorage();
+    async leaveGroup() {
+      this.setLoading(true);
+      try {
+        const { data } = await axios.post(
+          `/rooms/leave`,
+          {
+            roomName: this.roomName,
+            playerId: this.playerId
+          },
+          {
+            headers: {
+              authorization: this.token
+            }
+          }
+        );
+        this.setLoading(false);
+        clearLocalStorage();
+        this.$router.push("/");
+      } catch (e) {
+        console.log(e);
+        alert(`Failed to leave room`);
+      }
+      this.setLoading(false);
     }
   }
 };
