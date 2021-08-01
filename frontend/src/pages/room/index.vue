@@ -9,7 +9,7 @@
       <board :cards="cards" :cover="cover" />
     </div>
     <div class="board-container" v-else>
-      {{ roomID }}
+      {{ room.players }}
     </div>
   </div>
 </template>
@@ -19,6 +19,7 @@ import _ from "lodash";
 import { mapGetters, mapMutations } from "vuex";
 import Board from "@/components/Board.vue";
 import axios from "@/api";
+import { clearLocalStorage } from "@/utils";
 
 const cards = [
   { image: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png" },
@@ -85,24 +86,23 @@ export default {
   data() {
     return {
       roomID: this.$route.params.roomID,
-      room: null,
-      apiLoading: false,
       cover: "https://pngimg.com/uploads/pokemon_logo/pokemon_logo_PNG12.png",
       cards: CARDS.splice(52)
     };
   },
   computed: {
-    isGameRunning() {
-      return this.room !== null && this.room.status === "playing";
-    },
-    ...mapGetters(["playerId"])
+    ...mapGetters(["token", "isGameRunning", "room"])
   },
   async created() {
-    console.log("ssds");
     const validRoomID = await this.validateRoomID(this.roomID);
+    if (!this.token) {
+      clearLocalStorage();
+      this.$router.push("/");
+    }
+
     if (!validRoomID) {
       alert("Invalid room ID");
-      removeDetails();
+      clearLocalStorage();
       this.$router.push("/");
     }
 
@@ -112,25 +112,19 @@ export default {
     // Wait for other users
     // Start game button
   },
-  mounted() {
-    alert("afaf");
-  },
   methods: {
-    ...mapMutations(["setLoading"]),
-    async validateRoomID() {
-      if (!!this.roomID) {
-        this.apiLoading = true;
-        try {
-          const response = await axios(`/rooms/${this.roomID}`);
-          this.room = response.data;
-          saveDetails(this.room);
-          this.apiLoading = false;
-          return response.data.name === this.roomID;
-        } catch (e) {
-          console.log(e);
-        }
-        this.apiLoading = false;
+    ...mapMutations(["setLoading", "setRoom"]),
+    async validateRoomID(roomID) {
+      this.setLoading(true);
+      try {
+        const response = await axios(`/rooms/${roomID}`);
+        this.setRoom(response.data);
+        this.setLoading(false);
+        return response.data.name === this.roomID;
+      } catch (e) {
+        console.log(e);
       }
+      this.setLoading(false);
       return false;
     }
   }

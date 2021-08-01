@@ -1,6 +1,6 @@
 // profile/getters.ts
 import { GetterTree } from "vuex";
-import { RootState } from "./types";
+import { RoomState, RootState } from "./types";
 
 const getters: GetterTree<any, RootState> = {
   // App configuration
@@ -8,26 +8,33 @@ const getters: GetterTree<any, RootState> = {
     return state.isLoading;
   },
   // PLayer configuration
-  playerId(state): String | undefined {
-    return state.player.id;
+  playerId(state): String | null {
+    return state.player !== null ? state.player.id : null;
   },
   name(state): string {
-    return state.player.name;
+    return state.player !== null ? state.player.name : "";
   },
   profilePic(state): string {
-    return state.player.profilePic;
+    return state.player !== null ? state.player.profilePic : "1-5-7";
   },
-  token(state): string {
-    return state.player.token;
+  token(state): string | null {
+    return state.player !== null ? state.player.token : null;
   },
   isOwner(state): Boolean {
-    return state.player.owner;
+    return state.player !== null ? state.owner : false;
   },
   score(state): Number {
-    return state.player.score;
+    return state.player !== null ? state.owner : 0.0;
+  },
+  // Room status
+  room(state): RoomState {
+    return state.room !== null ? state.room : null;
   },
   roomName(state): String {
-    return state.room.name;
+    return state.room !== null ? state.room.name : "";
+  },
+  isGameRunning(state): Boolean {
+    return state.room !== null && state.room.status === "playing";
   }
 };
 

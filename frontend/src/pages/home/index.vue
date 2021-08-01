@@ -68,14 +68,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      "isLoading",
-      "roomName",
-      "token",
-      "playerId",
-      "name",
-      "profilePic"
-    ])
+    ...mapGetters(["isLoading", "roomName", "token"])
   },
   async created() {
     let validRoomID = false;
@@ -135,8 +128,7 @@ export default {
       try {
         const { data } = await axios.post(`/rooms/join`, {
           roomName: this.roomID,
-          name: this.personName,
-          profilePic: this.profilePicCode
+          ...this.player
         });
 
         this.setRoom(data.room);

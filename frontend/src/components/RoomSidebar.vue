@@ -37,7 +37,7 @@
 import { useGlobalConfig } from "vuestic-ui";
 import FilpNumber from "@/components/FlipNumber";
 import Player from "./Player";
-import { removeDetails } from "@/utils";
+import { clearLocalStorage } from "@/utils";
 
 export default {
   name: "room-sidebar",
@@ -75,7 +75,7 @@ export default {
       this.counter++;
     },
     leaveGroup() {
-      removeDetails();
+      // clearLocalStorage();
     }
   }
 };
