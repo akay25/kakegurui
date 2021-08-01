@@ -52,7 +52,7 @@ import _ from "lodash";
 import { mapGetters, mapMutations } from "vuex";
 import { nameByRace } from "fantasy-name-generator";
 import axios from "@/api";
-import { getPlayerInfo } from "@/utils";
+import { clearLocalStorage } from "@/utils";
 
 export default {
   name: "home",
@@ -68,56 +68,52 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["isLoading", "playerId", "token", "name", "profilePic"])
+    ...mapGetters([
+      "isLoading",
+      "roomName",
+      "token",
+      "playerId",
+      "name",
+      "profilePic"
+    ])
   },
   async created() {
+    let validRoomID = false;
     // Check for existing player storage
     if (!!this.token) {
       // Check for token and room id to make sure user is not doing double entry
-      // const existingRoom = getRoom();
-      // if (!!existingRoom && this.validateRoomID(existingRoom.name)) {
-      //   this.$router.push({ path: `/room/${existingRoom.name}` });
-      // } else {
-      // Clear everything and continue down
-      // }
+      validRoomID = await this.validateRoomID(this.roomName);
+      if (!!this.roomName && validRoomID) {
+        this.$router.push({ path: `/room/${this.roomName}` });
+      } else {
+        // Clear everything and continue down
+        clearLocalStorage();
+      }
     }
 
     // Check if the given room ID is valid or not
-    const validRoomID = await this.validateRoomID(this.roomID);
+    validRoomID = await this.validateRoomID(this.roomID);
     if (this.roomID !== undefined && !validRoomID) {
       this.roomID = null;
       alert("Invalid room ID");
       this.$router.push("/");
     } else if (this.roomID === undefined) {
       this.roomID = null;
-    } else {
-      // TODO: Write the room ID to instance
-    }
-
-    // Check for player and initialise it
-    const playerInfo = getPlayerInfo();
-    if (playerInfo !== null) {
-      // Load old name and set default value
-      this.player = {
-        name: playerInfo.name,
-        profilePic: playerInfo.profilePic
-      };
     }
   },
   methods: {
     ...mapMutations(["setLoading", "setRoom", "setPlayer", "setToken"]),
-    async validateRoomID() {
-      if (!!this.roomID) {
-        this.apiLoading = true;
-        try {
-          const response = await axios(`/rooms/${this.roomID}`);
-          this.apiLoading = false;
-          return response.data.name === this.roomID;
-        } catch (e) {
-          console.log(e);
-        }
-        this.apiLoading = false;
+    async validateRoomID(roomID) {
+      this.setLoading(true);
+      try {
+        const response = await axios(`/rooms/${roomID}`);
+        this.setLoading(false);
+
+        return response.data.name === roomID;
+      } catch (e) {
+        console.log(e);
       }
+      this.setLoading(false);
       return false;
     },
     async createRoom() {
@@ -128,16 +124,14 @@ export default {
         this.setRoom(data.room);
         this.setPlayer(data.player);
         this.setToken(data.token);
-        console.log("everything is set");
-        console.log(data);
-        // this.$router.push({ path: `/room/${room.name}` });
+        this.$router.push({ path: `/room/${data.room.name}` });
       } catch (e) {
         alert(`Failed to create room`);
       }
       this.setLoading(false);
     },
     async joinRoom() {
-      this.apiLoading = true;
+      this.setLoading(true);
       try {
         const { data } = await axios.post(`/rooms/join`, {
           roomName: this.roomID,
@@ -148,15 +142,12 @@ export default {
         this.setRoom(data.room);
         this.setPlayer(data.player);
         this.setToken(data.token);
-        console.log("everything is set");
-        console.log(data);
-
-        // this.$router.push({ path: `/room/${room.name}` });
+        this.$router.push({ path: `/room/${data.room.name}` });
       } catch (e) {
         console.log(e);
         alert(`Failed to join room with name: ${this.roomID}`);
       }
-      this.apiLoading = false;
+      this.setLoading(false);
     }
   }
 };

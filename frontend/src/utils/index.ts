@@ -13,3 +13,10 @@ export const loadFromLocalStorage = () => {
     store.commit("setPlayer", player);
   }
 };
+
+export const clearLocalStorage = () => {
+  localStorage.removeItem("player");
+  localStorage.removeItem("room");
+  store.commit("setRoom", null);
+  store.commit("setPlayer", null);
+};

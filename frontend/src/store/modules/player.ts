@@ -10,16 +10,16 @@ interface PlayerState {
   profilePic: string;
   score: Number;
   owner: Boolean;
-  token: String;
+  token: String | null;
 }
 
-export const state: PlayerState = {
+export const state: PlayerState | null = {
   id: undefined,
   name: "",
   profilePic: "1-5-7",
   score: 0.0,
   owner: false,
-  token: ""
+  token: null
 };
 
 export const player: Module<PlayerState, RootState> = {

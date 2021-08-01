@@ -12,7 +12,7 @@ interface RoomState {
   owner: Boolean;
 }
 
-export const state: RoomState = {
+export const state: RoomState | null = {
   id: undefined,
   name: "",
   profilePic: "1-5-7",

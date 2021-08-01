@@ -12,8 +12,12 @@ export const mutations: MutationTree<any> = {
   },
   // Player info
   setPlayer(state, payload: PlayerState) {
-    state.player = { ...state.player, ...payload };
-    localStorage.setItem("player", JSON.stringify(state.player));
+    if (payload !== null) {
+      state.player = { ...state.player, ...payload };
+      localStorage.setItem("player", JSON.stringify(state.player));
+    } else {
+      state.player = null;
+    }
   },
   setToken(state, payload: String) {
     state.player.token = payload;
@@ -21,8 +25,12 @@ export const mutations: MutationTree<any> = {
   },
   // PLayer room
   setRoom(state, payload: RoomState) {
-    state.room = { ...state.room, ...payload };
-    localStorage.setItem("room", JSON.stringify(state.room));
+    if (payload !== null) {
+      state.room = { ...state.room, ...payload };
+      localStorage.setItem("room", JSON.stringify(state.room));
+    } else {
+      state.room = null;
+    }
   }
 };
 

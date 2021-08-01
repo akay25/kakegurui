@@ -26,8 +26,8 @@ const getters: GetterTree<any, RootState> = {
   score(state): Number {
     return state.player.score;
   },
-  roomID(state): String {
-    return state.room.id;
+  roomName(state): String {
+    return state.room.name;
   }
 };
 
