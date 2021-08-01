@@ -116,7 +116,8 @@ export default {
     async joinRoom() {
       this.apiLoading = true;
       try {
-        const { data } = await axios.post(`/rooms/create`, {
+        const { data } = await axios.post(`/rooms/join`, {
+          roomName: this.roomID,
           name: this.personName,
           profilePic: this.profilePicCode
         });
