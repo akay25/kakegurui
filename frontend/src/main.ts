@@ -1,6 +1,7 @@
 import { VuesticPlugin, useGlobalConfig } from "vuestic-ui";
+import VueSocketIO from "vue-socket.io";
+import SocketIO from "socket.io-client";
 import { createApp } from "vue";
-import { createGtm } from "vue-gtm";
 import { createI18n } from "vue-i18n";
 import App from "./App.vue";
 import "./registerServiceWorker";
@@ -23,17 +24,20 @@ const i18nConfig = {
 
 const app = createApp(App);
 app.use(store);
+
 // Load data from localStorage
 loadFromLocalStorage();
+
+// Socket configuration
+app.use(
+  new VueSocketIO({
+    debug: true,
+    connection: SocketIO(process.env.VUE_APP_API_ENPOINT)
+  })
+);
+
 app.use(router);
-if (process.env.VUE_APP_GTM_ENABLED === "true") {
-  const gtmConfig = {
-    id: process.env.VUE_APP_GTM_KEY,
-    debug: false,
-    vueRouter: router
-  };
-  app.use(createGtm(gtmConfig));
-}
 app.use(createI18n(i18nConfig));
 app.use(VuesticPlugin, vuesticGlobalConfig);
+
 app.mount("#app");
