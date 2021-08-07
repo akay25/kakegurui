@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="flex xs12 md6">
+    <div class="flex xs12 md6" style="margin-top: 120px;">
       <va-card class="larger-padding">
         <va-card-title
           >{{ `${roomID !== null ? "Join" : "Create"}` }} room</va-card-title
@@ -149,7 +149,6 @@ export default {
 
 <style lang="scss">
 .container {
-  margin-top: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
