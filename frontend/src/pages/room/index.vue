@@ -112,6 +112,22 @@ export default {
     // Wait for other users
     // Start game button
   },
+  sockets: {
+    connect: function() {
+      console.log("Socket connected");
+    },
+    connect_error: function(err) {
+      if (err instanceof Error) {
+        console.log(err.message); // not authorized
+        if (content in err.data) alert(err.data.content);
+        // TODO: Redirect to main page after clearing out all things
+      }
+    }
+  },
+  mounted() {
+    this.$socket.connect();
+    this.$socket.emit("greetings", { awda: "Ada" });
+  },
   methods: {
     ...mapMutations(["setLoading", "setRoom"]),
     async validateRoomID(roomID) {
