@@ -91,7 +91,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["token", "isGameRunning", "room"])
+    ...mapGetters(["token", "isGameRunning", "room"]),
+    socketConnected() {
+      return this.$socket.connected;
+    }
   },
   async created() {
     const validRoomID = await this.validateRoomID(this.roomID);
@@ -105,28 +108,32 @@ export default {
       clearLocalStorage();
       this.$router.push("/");
     }
-
-    // Create and connect to socket room here
-    // TODO: Create/connect to socket until others join
-    // If socket connect to room fails using the auth then redirect
-    // Wait for other users
-    // Start game button
   },
   sockets: {
     connect: function() {
       console.log("Socket connected");
+      this.askToJoinRoom();
     },
     connect_error: function(err) {
       if (err instanceof Error) {
         console.log(err.message); // not authorized
         if (content in err.data) alert(err.data.content);
-        // TODO: Redirect to main page after clearing out all things
+        clearLocalStorage();
+        this.$router.push("/");
       }
+    },
+    room_updated: function(newUser) {
+      console.log("new user joined", newUser);
+    },
+    room_joined: function() {
+      console.log("room joined here");
+    },
+    room_left: function() {
+      console.log("I left the room");
     }
   },
   mounted() {
     this.$socket.connect();
-    this.$socket.emit("greetings", { awda: "Ada" });
   },
   methods: {
     ...mapMutations(["setLoading", "setRoom"]),
@@ -142,6 +149,12 @@ export default {
       }
       this.setLoading(false);
       return false;
+    },
+    askToJoinRoom() {
+      this.$socket.emit("join_room");
+    },
+    leaveRoom() {
+      this.$socket.emit("leave_room");
     }
   }
 };

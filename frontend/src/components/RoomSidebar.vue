@@ -78,6 +78,9 @@ export default {
     inc() {
       this.counter++;
     },
+    leaveRoom() {
+      this.$socket.emit("leave_room");
+    },
     async leaveGroup() {
       this.setLoading(true);
       try {
@@ -94,6 +97,7 @@ export default {
           }
         );
         this.setLoading(false);
+        this.leaveRoom();
         clearLocalStorage();
         this.$router.push("/");
       } catch (e) {
