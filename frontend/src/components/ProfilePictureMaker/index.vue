@@ -11,10 +11,11 @@
       <arrow-key itemName="TSHIRT" direction="←" v-model="profilePic.tshirt" />
     </div>
     <avataaars
+      ref="my_avataar"
       circleColor="#fca311"
-      :clotheType="'GraphicShirt'"
-      :eyebrowType="'Default'"
-      :facialHairType="'blank'"
+      clotheType="GraphicShirt"
+      eyebrowType="Default"
+      facialHairType="blank"
       :eyeType="profilePic.eye"
       :graphicType="profilePic.tshirt"
       :clotheColor="profilePic.clothColor"
@@ -31,6 +32,7 @@
       />
       <arrow-key itemName="TSHIRT" direction="→" v-model="profilePic.tshirt" />
     </div>
+    <button @click="handleClick" />
   </div>
 </template>
 
@@ -39,6 +41,7 @@ import _ from "lodash";
 import Avataaars from "vuejs-avataaars/src/Avataaars.vue";
 import { TOP_HAT, CLOTH_COLORS, TSHIRT, EYE_TYPE } from "./data";
 import ArrowKey from "./ArrowKey.vue";
+const SVGToPNG = require("./SvgToPngConverter");
 
 export default {
   name: "ProfilePicMaker",
@@ -52,6 +55,20 @@ export default {
         eye: _.sample(EYE_TYPE)
       }
     };
+  },
+  methods: {
+    generatePNG() {
+      if ("my_avataar" in this.$refs) {
+        new SVGToPNG().convertFromInput(this.$refs.my_avataar.$el, function(
+          imgData
+        ) {
+          localStorage.setItem("profilePic", {
+            ...profilePic,
+            png: imgData
+          });
+        });
+      }
+    }
   }
 };
 </script>
