@@ -32,7 +32,6 @@
       />
       <arrow-key itemName="TSHIRT" direction="→" v-model="profilePic.tshirt" />
     </div>
-    <button @click="handleClick" />
   </div>
 </template>
 
@@ -63,7 +62,7 @@ export default {
           imgData
         ) {
           localStorage.setItem("profilePic", {
-            ...profilePic,
+            settings: profilePic,
             png: imgData
           });
         });
