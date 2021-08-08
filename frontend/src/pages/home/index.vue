@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="flex xs12 md6" style="margin-top: 120px;">
+    <div class="flex xs12 md4" style="margin-top: 120px;">
       <va-card class="larger-padding">
         <va-card-title
           >{{ `${roomID !== null ? "Join" : "Create"}` }} room</va-card-title
@@ -8,7 +8,10 @@
         <va-card-content>
           <div class="row justify--center">
             <div class="flex md8 justify--center">
-              <div class="flex md6">
+              <profile-pic-maker />
+              <br />
+              <br />
+              <div class="flex" style="border: 1px solid #e5e5e5;">
                 <va-input
                   v-model="player.name"
                   placeholder="Your name"
@@ -52,10 +55,12 @@ import _ from "lodash";
 import { mapGetters, mapMutations } from "vuex";
 import { nameByRace } from "fantasy-name-generator";
 import axios from "@/api";
+import ProfilePicMaker from "@/components/ProfilePictureMaker";
 import { clearLocalStorage } from "@/utils";
 
 export default {
   name: "home",
+  components: { ProfilePicMaker },
   data() {
     return {
       roomID: this.$route.params.roomID,
