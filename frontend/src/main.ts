@@ -34,8 +34,8 @@ app.use(
     debug: true,
     connection: SocketIO(process.env.VUE_APP_SOCKET_ENPOINT, {
       withCredentials: true,
-      auth: {
-        token: store.getters.token
+      extraHeaders: {
+        authorization: store.getters.token
       },
       autoConnect: false
     })
