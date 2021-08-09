@@ -97,12 +97,13 @@ export default {
     }
   },
   async created() {
-    const validRoomID = await this.validateRoomID(this.roomID);
     if (!this.token) {
       clearLocalStorage();
       this.$router.push("/");
     }
 
+    const validRoomID = await this.validateRoomID(this.roomID);
+    console.log(validRoomID, this.roomID, this.token);
     if (!validRoomID) {
       alert("Invalid room ID");
       clearLocalStorage();
@@ -117,7 +118,6 @@ export default {
     connect_error: function(err) {
       if (err instanceof Error) {
         console.log(err);
-        console.log(err.message); // not authorized
         if (content in err.data) alert(err.data.content);
         clearLocalStorage();
         this.$router.push("/");
@@ -134,7 +134,9 @@ export default {
     }
   },
   mounted() {
-    this.$socket.connect();
+    if (!!this.$socket.io.opts.extraHeaders.authorization) {
+      this.$socket.connect();
+    }
   },
   methods: {
     ...mapMutations(["setLoading", "setRoom"]),

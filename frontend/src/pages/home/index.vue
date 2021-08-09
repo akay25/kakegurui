@@ -130,11 +130,7 @@ export default {
       this.setLoading(true);
       try {
         const { data } = await axios.post(`/rooms/create`, this.player);
-
-        this.setRoom(data.room);
-        this.setPlayer(data.player);
-        this.setToken(data.token);
-        this.$router.push({ path: `/room/${data.room.name}` });
+        this.leaveThisPage(data);
       } catch (e) {
         alert(`Failed to create room`);
       }
@@ -148,16 +144,19 @@ export default {
           roomName: this.roomID,
           ...this.player
         });
-
-        this.setRoom(data.room);
-        this.setPlayer(data.player);
-        this.setToken(data.token);
-        this.$router.push({ path: `/room/${data.room.name}` });
+        this.leaveThisPage(data);
       } catch (e) {
         console.log(e);
         alert(`Failed to join room with name: ${this.roomID}`);
       }
       this.setLoading(false);
+    },
+    leaveThisPage(data) {
+      this.$socket.io.opts.extraHeaders.authorization = data.token;
+      this.setRoom(data.room);
+      this.setPlayer(data.player);
+      this.setToken(data.token);
+      this.$router.push({ path: `/room/${data.room.name}` });
     }
   }
 };
