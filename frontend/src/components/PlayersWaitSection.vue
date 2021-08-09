@@ -11,7 +11,7 @@
           >Leave Game</va-button
         >
       </div>
-      <div class="flex md8 xs12">
+      <div class="flex md8 xs12" v-if="!!room">
         <PlayerAvataar
           v-for="player in room.players"
           :key="player.id"
@@ -25,6 +25,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import axios from "@/api";
 import PlayerAvataar from "./Player/Avataar.vue";
 import { clearLocalStorage } from "@/utils";
 
