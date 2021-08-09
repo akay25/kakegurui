@@ -5,6 +5,11 @@
         <va-button color="#fca311" @click="startGame" v-if="isOwner"
           >Start Game</va-button
         >
+        <br />
+        <br />
+        <va-button color="danger" @click="leaveGame" v-if="isOwner"
+          >Leave Game</va-button
+        >
       </div>
       <div class="flex md8 xs12">
         <PlayerAvataar
@@ -19,8 +24,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import PlayerAvataar from "./Player/Avataar.vue";
+import { clearLocalStorage } from "@/utils";
+
 export default {
   name: "PlayersWaitSection",
   components: { PlayerAvataar },
@@ -30,13 +37,43 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["isGameRunning", "room", "isOwner"])
-  },
-  created() {
-    console.log(this.isOwner);
+    ...mapGetters([
+      "isGameRunning",
+      "room",
+      "isOwner",
+      "roomName",
+      "playerId",
+      "token"
+    ])
   },
   methods: {
-    startGame() {}
+    ...mapMutations(["setLoading"]),
+    startGame() {},
+    async leaveGame() {
+      this.setLoading(true);
+      try {
+        const { data } = await axios.post(
+          `/rooms/leave`,
+          {
+            roomName: this.roomName,
+            playerId: this.playerId
+          },
+          {
+            headers: {
+              authorization: this.token
+            }
+          }
+        );
+        this.setLoading(false);
+        this.$socket.emit("leave_room");
+        clearLocalStorage();
+        this.$router.push("/");
+      } catch (e) {
+        console.log(e);
+        alert(`Failed to leave room`);
+      }
+      this.setLoading(false);
+    }
   }
 };
 </script>
