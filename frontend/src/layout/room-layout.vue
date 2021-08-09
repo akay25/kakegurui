@@ -1,5 +1,6 @@
 <template>
   <div class="room-layout">
+    <players-wait-section />
     <div class="room-layout__content">
       <div class="room-layout__sidebar-wrapper">
         <room-sidebar />
@@ -18,11 +19,13 @@ import { useStore } from "vuex";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { onBeforeRouteUpdate } from "vue-router";
 import RoomSidebar from "@/components/RoomSidebar";
+import PlayersWaitSection from "@/components/PlayersWaitSection.vue";
 
 export default {
   name: "room-layout",
   components: {
-    RoomSidebar
+    RoomSidebar,
+    PlayersWaitSection
   },
 
   setup() {

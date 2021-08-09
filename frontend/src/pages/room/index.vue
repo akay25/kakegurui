@@ -1,15 +1,12 @@
 <template>
   <div class="flex">
-    <div class="board-container" v-if="isGameRunning">
+    <div class="board-container">
       <div class="row">
         <div class="flex xs12">
           <va-progress-bar :modelValue="99"></va-progress-bar>
         </div>
       </div>
       <board :cards="cards" :cover="cover" />
-    </div>
-    <div class="board-container" v-else>
-      {{ !!room && room.players }}
     </div>
   </div>
 </template>
