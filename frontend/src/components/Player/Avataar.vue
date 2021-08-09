@@ -47,11 +47,11 @@ export default {
         return;
       }
     }
-    this.generatePNG();
+    await this.generatePNG();
   },
   methods: {
     async generatePNG() {
-      if (`profile_${id}` in this.$refs) {
+      if (`profile_${this.id}` in this.$refs) {
         this.pngData = await new SVGToPNG().convertFromInput(
           this.$refs.my_avataar.$el
         );
