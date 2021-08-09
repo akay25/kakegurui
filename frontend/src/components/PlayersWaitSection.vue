@@ -1,8 +1,16 @@
 <template>
   <div class="overlay-container" v-if="!isGameRunning">
     <div class="row">
-      <div class="flex md6 xs12">
+      <div class="flex md4 xs12">
         fsdfesjhjk
+      </div>
+      <div class="flex md8 xs12">
+        <PlayerAvataar
+          v-for="player in room.players"
+          :key="player.id"
+          :profilePic="player.profilePic"
+          :id="player.id"
+        />
       </div>
     </div>
   </div>
@@ -10,15 +18,17 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PlayerAvataar from "./Player/Avataar.vue";
 export default {
   name: "PlayersWaitSection",
+  components: { PlayerAvataar },
   data() {
     return {
       show: true
     };
   },
   computed: {
-    ...mapGetters(["isGameRunning"])
+    ...mapGetters(["isGameRunning", "room"])
   }
 };
 </script>

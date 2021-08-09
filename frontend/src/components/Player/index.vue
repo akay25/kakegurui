@@ -1,42 +1,16 @@
 <template>
-  <div class="player-holder">
-    <avataaars
-      :clotheType="'GraphicShirt'"
-      :eyebrowType="'Angry'"
-      :eyeType="'Cry'"
-      :mouthType="'Eating'"
-      :facialHairColor="'Blonde'"
-      :graphicType="'Cumbia'"
-    >
-    </avataaars>
+  <div>
+    <avataar :profilePic="player.profilePic" :id="player.id" />
   </div>
 </template>
 
 <script>
-import Avataaars from "vuejs-avataaars/src/Avataaars.vue";
+import Avataar from "./Avataar.vue";
 export default {
-  components: { Avataaars },
   name: "Player",
+  components: { Avataar },
   props: {
-    isPlaying: {
-      type: Boolean,
-      default: false
-    }
+    player: Object
   }
 };
 </script>
-
-<style lang="scss">
-.player-holder {
-  display: inline-flex;
-  margin: 5px;
-  width: 60px;
-  height: 60px;
-  border: 2px solid #14213dbd;
-  border-radius: 5px;
-
-  &:hover {
-    border: 2px solid #fca311;
-  }
-}
-</style>
