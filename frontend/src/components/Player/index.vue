@@ -1,6 +1,6 @@
 <template>
   <div>
-    <avataar :profilePic="player.profilePic" :id="player.id" />
+    <avataar :profilePic="player.profilePic" :id="player.id" :width="60" />
   </div>
 </template>
 

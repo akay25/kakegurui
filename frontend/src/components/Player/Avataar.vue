@@ -28,12 +28,15 @@ export default {
   components: { Avataaars },
   props: {
     id: String,
-    profilePic: Object
+    profilePic: Object,
+    width: {
+      type: Number,
+      default: 120
+    }
   },
   data() {
     return {
-      pngData: null,
-      width: 120
+      pngData: null
     };
   },
   computed: {

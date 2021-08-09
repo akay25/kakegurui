@@ -22,7 +22,11 @@
       </div>
     </div>
     <div class="row player-container">
-      <!-- <player v-for="i in [1, 2, 3, 4, 5, 6]" :key="i" /> -->
+      <Player
+        v-for="player in room.players"
+        :key="player.id"
+        :player="player"
+      />
     </div>
     <div class="leave-game-button-holder">
       <va-button size="large" icon="close" color="danger" @click="leaveGame"
@@ -35,9 +39,9 @@
 <script>
 import { useGlobalConfig } from "vuestic-ui";
 import axios from "@/api";
+import { clearLocalStorage } from "@/utils";
 import FilpNumber from "@/components/FlipNumber";
 import Player from "./Player";
-import { clearLocalStorage } from "@/utils";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
@@ -65,7 +69,14 @@ export default {
     colors() {
       return useGlobalConfig().getGlobalConfig().colors;
     },
-    ...mapGetters(["isLoading", "playerId", "roomName", "token", "score"])
+    ...mapGetters([
+      "isLoading",
+      "playerId",
+      "roomName",
+      "token",
+      "score",
+      "room"
+    ])
   },
   methods: {
     ...mapMutations(["setLoading"]),
@@ -120,6 +131,7 @@ export default {
 
 <style lang="scss">
 .player-container {
+  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
