@@ -12,8 +12,7 @@
       </div>
     </div>
     <div class="row container">
-      <filp-number :value="counter" :speed="600" :digitCount="2" />
-      <va-button @click="inc">Click Me</va-button>
+      <filp-number :value="score" :speed="600" :digitCount="2" />
     </div>
     <div class="row">
       <div class="xs2">
@@ -26,7 +25,7 @@
       <!-- <player v-for="i in [1, 2, 3, 4, 5, 6]" :key="i" /> -->
     </div>
     <div class="leave-game-button-holder">
-      <va-button size="large" icon="close" color="danger" @click="leaveGroup"
+      <va-button size="large" icon="close" color="danger" @click="leaveGame"
         >Leave Game</va-button
       >
     </div>
@@ -57,11 +56,6 @@ export default {
       default: undefined
     }
   },
-  data() {
-    return {
-      counter: 0
-    };
-  },
   computed: {
     computedClass() {
       return {
@@ -71,7 +65,7 @@ export default {
     colors() {
       return useGlobalConfig().getGlobalConfig().colors;
     },
-    ...mapGetters(["isLoading", "playerId", "roomName", "token"])
+    ...mapGetters(["isLoading", "playerId", "roomName", "token", "score"])
   },
   methods: {
     ...mapMutations(["setLoading"]),
@@ -81,7 +75,7 @@ export default {
     leaveRoom() {
       this.$socket.emit("leave_room");
     },
-    async leaveGroup() {
+    async leaveGame() {
       this.setLoading(true);
       try {
         const { data } = await axios.post(
