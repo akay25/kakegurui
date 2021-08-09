@@ -7,9 +7,7 @@
         >
         <br />
         <br />
-        <va-button color="danger" @click="leaveGame" v-if="isOwner"
-          >Leave Game</va-button
-        >
+        <va-button color="danger" @click="leaveGame">Leave Game</va-button>
       </div>
       <div class="flex md8 xs12" v-if="!!room">
         <PlayerAvataar

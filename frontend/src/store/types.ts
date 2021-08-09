@@ -20,7 +20,7 @@ export interface RootState {
 }
 
 export interface RoomState {
-  id: String;
+  id: String | undefined;
   players: [PlayerState];
   status: String;
   name: String;

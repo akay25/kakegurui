@@ -66,8 +66,9 @@ export default {
         this.$router.push("/");
       }
     },
-    room_updated: function(newUser) {
-      console.log("new user joined", newUser);
+    room_updated: function(room) {
+      this.setRoom({ players: room.players });
+      console.log("Room updated");
     },
     room_joined: function() {
       console.log("room joined here");

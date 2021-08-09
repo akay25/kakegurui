@@ -6,18 +6,16 @@ import { RootState } from "../types";
 
 interface RoomState {
   id: String | undefined;
-  name: string;
-  profilePic: string;
-  score: Number;
-  owner: Boolean;
+  players: any;
+  status: String;
+  name: String;
 }
 
 export const state: RoomState | null = {
   id: undefined,
   name: "",
-  profilePic: "1-5-7",
-  score: 0.0,
-  owner: false
+  players: [],
+  status: "suspend"
 };
 
 export const room: Module<RoomState, RootState> = {
