@@ -68,10 +68,7 @@ export default {
             png: pngData
           })
         );
-        return {
-          settings: this.profilePic,
-          png: pngData
-        };
+        return this.profilePic;
       }
     }
   }

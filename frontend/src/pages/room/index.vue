@@ -9,7 +9,7 @@
       <board :cards="cards" :cover="cover" />
     </div>
     <div class="board-container" v-else>
-      {{ room.players }}
+      {{ !!room && room.players }}
     </div>
   </div>
 </template>
@@ -116,6 +116,7 @@ export default {
     },
     connect_error: function(err) {
       if (err instanceof Error) {
+        console.log(err);
         console.log(err.message); // not authorized
         if (content in err.data) alert(err.data.content);
         clearLocalStorage();
@@ -156,6 +157,9 @@ export default {
     leaveRoom() {
       this.$socket.emit("leave_room");
     }
+  },
+  beforeUnmount() {
+    this.$socket.disconnect();
   }
 };
 </script>
