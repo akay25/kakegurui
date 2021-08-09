@@ -56,16 +56,22 @@ export default {
     };
   },
   methods: {
-    generatePNG() {
+    async generatePNG() {
       if ("my_avataar" in this.$refs) {
-        new SVGToPNG().convertFromInput(this.$refs.my_avataar.$el, function(
-          imgData
-        ) {
-          localStorage.setItem("profilePic", {
-            settings: profilePic,
-            png: imgData
-          });
-        });
+        const pngData = await new SVGToPNG().convertFromInput(
+          this.$refs.my_avataar.$el
+        );
+        localStorage.setItem(
+          "profilePic",
+          JSON.stringify({
+            settings: this.profilePic,
+            png: pngData
+          })
+        );
+        return {
+          settings: this.profilePic,
+          png: pngData
+        };
       }
     }
   }

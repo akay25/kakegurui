@@ -18,28 +18,30 @@ class SvgToPngConverter {
     document.body.removeChild(this.imgPreview);
   }
 
-  convertFromInput(svg, callback) {
+  convertFromInput(svg) {
     this._init();
     let _this = this;
-    this.imgPreview.onload = function() {
-      const img = new Image();
-      _this.canvas.width = svg.clientWidth;
-      _this.canvas.height = svg.clientHeight;
-      img.crossOrigin = "anonymous";
-      img.src = _this.imgPreview.src;
-      img.onload = function() {
-        _this.canvasCtx.drawImage(img, 0, 0);
-        let imgData = _this.canvas.toDataURL("image/png");
 
-        if (typeof callback == "function") {
-          callback(imgData);
-        }
-        _this._cleanUp();
+    return new Promise((resolve, reject) => {
+      _this.imgPreview.onload = function() {
+        const img = new Image();
+        _this.canvas.width = svg.clientWidth;
+        _this.canvas.height = svg.clientHeight;
+        img.crossOrigin = "anonymous";
+        img.src = _this.imgPreview.src;
+        img.onload = function() {
+          _this.canvasCtx.drawImage(img, 0, 0);
+          let imgData = _this.canvas.toDataURL("image/png");
+          _this._cleanUp();
+          resolve(imgData);
+        };
       };
-    };
+      _this.imgPreview.onerror = reject;
 
-    const svgAsXML = new XMLSerializer().serializeToString(svg);
-    this.imgPreview.src = "data:image/svg+xml," + encodeURIComponent(svgAsXML);
+      const svgAsXML = new XMLSerializer().serializeToString(svg);
+      _this.imgPreview.src =
+        "data:image/svg+xml," + encodeURIComponent(svgAsXML);
+    });
   }
 }
 

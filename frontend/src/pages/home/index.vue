@@ -8,7 +8,7 @@
         <va-card-content>
           <div class="row justify--center">
             <div class="flex md8 justify--center">
-              <profile-pic-maker />
+              <profile-pic-maker ref="profilePicMaker" />
               <br />
               <br />
               <div class="flex" style="border: 1px solid #e5e5e5;">
@@ -68,7 +68,7 @@ export default {
         name: nameByRace("human", {
           gender: _.sample(["male", "female"])
         }),
-        profilePic: "1-5-7"
+        profilePic: null
       }
     };
   },
@@ -103,6 +103,15 @@ export default {
   },
   methods: {
     ...mapMutations(["setLoading", "setRoom", "setPlayer", "setToken"]),
+    async loadProfilePic() {
+      if ("profilePicMaker" in this.$refs) {
+        try {
+          this.player.profilePic = await this.$refs.profilePicMaker.generatePNG();
+        } catch (e) {
+          console.log("Failed to load profile pic: ", e);
+        }
+      }
+    },
     async validateRoomID(roomID) {
       this.setLoading(true);
       try {
@@ -117,6 +126,7 @@ export default {
       return false;
     },
     async createRoom() {
+      await this.loadProfilePic();
       this.setLoading(true);
       try {
         const { data } = await axios.post(`/rooms/create`, this.player);
@@ -131,6 +141,7 @@ export default {
       this.setLoading(false);
     },
     async joinRoom() {
+      await this.loadProfilePic();
       this.setLoading(true);
       try {
         const { data } = await axios.post(`/rooms/join`, {
