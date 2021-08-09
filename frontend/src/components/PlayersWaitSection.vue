@@ -1,8 +1,10 @@
 <template>
   <div class="overlay-container" v-if="!isGameRunning">
     <div class="row">
-      <div class="flex md4 xs12" v-if="isOwner">
-        <va-button color="#fca311" @click="startGame">Start Game</va-button>
+      <div class="flex md4 xs12">
+        <va-button color="#fca311" @click="startGame" v-if="isOwner"
+          >Start Game</va-button
+        >
       </div>
       <div class="flex md8 xs12">
         <PlayerAvataar
@@ -29,6 +31,9 @@ export default {
   },
   computed: {
     ...mapGetters(["isGameRunning", "room", "isOwner"])
+  },
+  created() {
+    console.log(this.isOwner);
   },
   methods: {
     startGame() {}

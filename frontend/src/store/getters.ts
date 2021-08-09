@@ -21,7 +21,7 @@ const getters: GetterTree<any, RootState> = {
     return state.player !== null ? state.player.token : null;
   },
   isOwner(state): Boolean {
-    return state.player !== null ? state.owner : false;
+    return state.player !== null ? state.player.owner : false;
   },
   score(state): Number {
     return state.player !== null ? state.owner : 0.0;
