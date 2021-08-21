@@ -7,13 +7,14 @@
         style="display: inline-block;"
       >
         <card
+          :ref="`card_${index}`"
           :class="index === selectedID ? selectedCardClass : 'on-hover'"
           :height="cardHeight"
           :width="cardWidth"
           :frontImage="cover"
           :index="index"
           :flipEnabled="
-            (isCurrentTurnMine && !isFlipped) || index === selectedID
+            isCurrentTurnMine && (!isFlipped || index === selectedID)
           "
           @flip="handleFlip"
           @wrongCard="handleWrongCard"
@@ -54,8 +55,8 @@ export default {
     };
   },
   sockets: {
-    card_flipped: function(data) {
-      console.log("someone flipped carx on me", data);
+    card_flipped: function({ cardIndex, direction }) {
+      this.flipCardManually(cardIndex, direction);
     }
   },
   computed: {
@@ -80,16 +81,29 @@ export default {
         if (!e.val) {
           this.isFlipped = false;
           this.selectedID = -1;
+          this.$socket.emit("i_flipped_card", {
+            cardIndex: e.id,
+            direction: "down"
+          });
         } else if (!this.isFlipped && e.val) {
           this.isFlipped = true;
           this.selectedID = e.id;
-          this.$socket.emit("i_flipped_card", this.selectedID);
+          this.$socket.emit("i_flipped_card", {
+            cardIndex: this.selectedID,
+            direction: "up"
+          });
         }
         this.selectedCardClass = "";
       }
     },
     handleWrongCard(e) {
       this.selectedCardClass = "wrong-card";
+    },
+    flipCardManually(cardIndex, direction = "up") {
+      const selectedCard = this.$refs[`card_${cardIndex}`];
+      if (!!selectedCard) {
+        selectedCard.flipMe(direction === "up");
+      }
     }
   }
 };

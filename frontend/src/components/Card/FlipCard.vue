@@ -4,10 +4,10 @@
     :style="`height: ${height}px; width: ${width}px;`"
   >
     <div class="flipper">
-      <div class="slot-container front" v-on:click="toggleFront">
+      <div class="slot-container front" v-on:click="toggleFront()">
         <slot name="front"></slot>
       </div>
-      <div class="slot-container back" v-on:click="toggleBack">
+      <div class="slot-container back" v-on:click="toggleBack()">
         <slot name="back"></slot>
       </div>
     </div>
@@ -38,8 +38,8 @@ export default {
     };
   },
   methods: {
-    toggleFront() {
-      if (this.enabled) {
+    toggleFront(forced = false) {
+      if (this.enabled || forced) {
         this.flipped = true;
         this.$emit("flip", true);
       } else {

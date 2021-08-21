@@ -3,6 +3,7 @@
     :height="height"
     :width="width"
     :enabled="flipEnabled"
+    :ref="`flip_component_${index}`"
     @flip="handleFlip"
   >
     <template v-slot:front>
@@ -52,8 +53,18 @@ export default {
       if (event === -1) {
         this.$emit("wrongCard", { currentCardId: this.index });
       } else {
-        console.log("cards will be checed= her");
+        // TODO: Check for card event before flip
         this.$emit("flip", { id: this.index, val: event });
+      }
+    },
+    flipMe(toBack = true) {
+      const flipComponent = this.$refs[`flip_component_${this.index}`];
+      if (!!flipComponent) {
+        if (toBack) {
+          flipComponent.toggleFront(true);
+        } else {
+          flipComponent.toggleBack(true);
+        }
       }
     }
   }
