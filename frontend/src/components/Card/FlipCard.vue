@@ -46,8 +46,8 @@ export default {
         this.$emit("flip", -1);
       }
     },
-    toggleBack() {
-      if (this.enabled) {
+    toggleBack(forced = false) {
+      if (this.enabled || forced) {
         this.flipped = false;
         this.$emit("flip", false);
       } else {
