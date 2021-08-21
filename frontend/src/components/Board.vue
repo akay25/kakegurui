@@ -2,7 +2,7 @@
   <div>
     <transition-group name="flip-list" tag="div">
       <div
-        v-for="index in totalCardCount"
+        v-for="index in totalCardsCount"
         :key="index"
         style="display: inline-block;"
       >
@@ -12,7 +12,9 @@
           :width="cardWidth"
           :frontImage="cover"
           :index="index"
-          :flipEnabled="!isFlipped || index === selectedID"
+          :flipEnabled="
+            (isCurrentTurnMine && !isFlipped) || index === selectedID
+          "
           @flip="handleFlip"
           @wrongCard="handleWrongCard"
         />
@@ -51,8 +53,13 @@ export default {
       shuffleTypes: ["Slow", "Medium", "Fast"]
     };
   },
+  sockets: {
+    card_flipped: function(data) {
+      console.log("someone flipped carx on me", data);
+    }
+  },
   computed: {
-    ...mapGetters(["totalCardsCount"])
+    ...mapGetters(["totalCardsCount", "isCurrentTurnMine"])
   },
   watch: {
     selectedCardClass(newVal) {
@@ -69,14 +76,17 @@ export default {
   },
   methods: {
     handleFlip(e) {
-      if (!e.val) {
-        this.isFlipped = false;
-        this.selectedID = -1;
-      } else if (!this.isFlipped && e.val) {
-        this.isFlipped = true;
-        this.selectedID = e.id;
+      if (this.isCurrentTurnMine) {
+        if (!e.val) {
+          this.isFlipped = false;
+          this.selectedID = -1;
+        } else if (!this.isFlipped && e.val) {
+          this.isFlipped = true;
+          this.selectedID = e.id;
+          this.$socket.emit("i_flipped_card", this.selectedID);
+        }
+        this.selectedCardClass = "";
       }
-      this.selectedCardClass = "";
     },
     handleWrongCard(e) {
       this.selectedCardClass = "wrong-card";

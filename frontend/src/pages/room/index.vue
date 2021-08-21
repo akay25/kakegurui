@@ -105,6 +105,12 @@ export default {
       try {
         const response = await axios(`/rooms/${roomID}`);
         this.setRoom(response.data);
+        if (response.data.status === "playing") {
+          this.setTotalCardsCount(104);
+          this.setCurrentPlayer(
+            response.data.players[response.data.currentPlayer]
+          );
+        }
         this.setLoading(false);
         return response.data.name === this.roomID;
       } catch (e) {

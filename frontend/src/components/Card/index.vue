@@ -52,6 +52,7 @@ export default {
       if (event === -1) {
         this.$emit("wrongCard", { currentCardId: this.index });
       } else {
+        console.log("cards will be checed= her");
         this.$emit("flip", { id: this.index, val: event });
       }
     }
