@@ -6,7 +6,7 @@
           <va-progress-bar :modelValue="99"></va-progress-bar>
         </div>
       </div>
-      <board :cards="cards" :cover="cover" />
+      <board :cover="cover" />
     </div>
   </div>
 </template>
@@ -16,10 +16,7 @@ import _ from "lodash";
 import { mapGetters, mapMutations } from "vuex";
 import Board from "@/components/Board.vue";
 import axios from "@/api";
-import { cards } from "@/data/cards";
 import { clearLocalStorage } from "@/utils";
-
-const CARDS = _.shuffle(_.concat(cards, cards));
 
 export default {
   name: "room",
@@ -29,12 +26,12 @@ export default {
   data() {
     return {
       roomID: this.$route.params.roomID,
-      cover: "https://pngimg.com/uploads/pokemon_logo/pokemon_logo_PNG12.png",
-      cards: CARDS.splice(52)
+      // This will changed on given type of card
+      cover: "https://pngimg.com/uploads/pokemon_logo/pokemon_logo_PNG12.png"
     };
   },
   computed: {
-    ...mapGetters(["token", "isGameRunning", "room"]),
+    ...mapGetters(["token", "isGameRunning", "room", "totalCardsCount"]),
     socketConnected() {
       return this.$socket.connected;
     }
@@ -77,7 +74,9 @@ export default {
       console.log("I left the room");
     },
     game_started: function(data) {
-      console.log("game started guys!!", data);
+      this.setTotalCardsCount(data.totalCards);
+      this.setCurrentPlayer(data.player);
+      this.setRoom({ status: "playing" });
     }
   },
   mounted() {
@@ -86,7 +85,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setLoading", "setRoom"]),
+    ...mapMutations([
+      "setLoading",
+      "setRoom",
+      "setTotalCardsCount",
+      "setCurrentPlayer"
+    ]),
     async validateRoomID(roomID) {
       this.setLoading(true);
       try {

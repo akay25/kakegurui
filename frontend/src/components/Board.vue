@@ -2,8 +2,8 @@
   <div>
     <transition-group name="flip-list" tag="div">
       <div
-        v-for="(item, index) in cards"
-        :key="item"
+        v-for="index in totalCardCount"
+        :key="index"
         style="display: inline-block;"
       >
         <card
@@ -11,7 +11,6 @@
           :height="cardHeight"
           :width="cardWidth"
           :frontImage="cover"
-          :backImage="item.image"
           :index="index"
           :flipEnabled="!isFlipped || index === selectedID"
           @flip="handleFlip"
@@ -25,6 +24,7 @@
 <script>
 import Card from "@/components/Card/index.vue";
 import ImageHolder from "@/components/Card/ImageHolder.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "board",
   components: {
@@ -32,10 +32,6 @@ export default {
     ImageHolder
   },
   props: {
-    cards: {
-      type: [Object],
-      default: []
-    },
     cover: {
       type: String
     },
@@ -54,6 +50,9 @@ export default {
       selectedCardClass: "",
       shuffleTypes: ["Slow", "Medium", "Fast"]
     };
+  },
+  computed: {
+    ...mapGetters(["totalCardsCount"])
   },
   watch: {
     selectedCardClass(newVal) {

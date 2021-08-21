@@ -24,4 +24,5 @@ export interface RoomState {
   players: [PlayerState];
   status: String;
   name: String;
+  totalCards: Number;
 }

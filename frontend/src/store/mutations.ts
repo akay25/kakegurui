@@ -31,6 +31,12 @@ export const mutations: MutationTree<any> = {
     } else {
       state.room = null;
     }
+  },
+  setTotalCardsCount(state, payload: Number) {
+    state.room.totalCards = payload;
+  },
+  setCurrentPlayer(state, payload: PlayerState) {
+    state.room.currentPlayer = payload;
   }
 };
 
