@@ -47,7 +47,30 @@ export default {
   },
   methods: {
     ...mapMutations(["setLoading"]),
-    startGame() {},
+    async startGame() {
+      this.setLoading(true);
+      try {
+        const response = await axios.post(
+          "/rooms/start-game",
+          {
+            roomName: this.roomName
+          },
+          {
+            headers: {
+              authorization: this.token
+            }
+          }
+        );
+        console.log(response);
+      } catch (e) {
+        if (!!e.response && !!e.response.data && !!e.response.data.message) {
+          alert(e.response.data.message);
+        } else {
+          alert(`Failed to start game`);
+        }
+      }
+      this.setLoading(false);
+    },
     async leaveGame() {
       this.setLoading(true);
       try {
