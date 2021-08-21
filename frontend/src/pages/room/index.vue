@@ -3,7 +3,10 @@
     <div class="board-container">
       <div class="row">
         <div class="flex xs12">
-          <va-progress-bar :modelValue="99"></va-progress-bar>
+          <va-progress-bar
+            :modelValue="99"
+            v-if="isCurrentTurnMine"
+          ></va-progress-bar>
         </div>
       </div>
       <board :cover="cover" />
@@ -31,7 +34,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["token", "isGameRunning", "room", "totalCardsCount"]),
+    ...mapGetters([
+      "token",
+      "isGameRunning",
+      "room",
+      "totalCardsCount",
+      "isCurrentTurnMine"
+    ]),
     socketConnected() {
       return this.$socket.connected;
     }
