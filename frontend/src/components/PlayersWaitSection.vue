@@ -50,7 +50,7 @@ export default {
     async startGame() {
       this.setLoading(true);
       try {
-        const response = await axios.post(
+        await axios.post(
           "/rooms/start-game",
           {
             roomName: this.roomName
@@ -61,7 +61,6 @@ export default {
             }
           }
         );
-        console.log(response);
       } catch (e) {
         if (!!e.response && !!e.response.data && !!e.response.data.message) {
           alert(e.response.data.message);
