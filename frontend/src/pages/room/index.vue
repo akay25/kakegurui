@@ -61,7 +61,7 @@ export default {
     connect_error: function(err) {
       if (err instanceof Error) {
         console.log(err);
-        if (content in err.data) alert(err.data.content);
+        if (content in err.data && !!err.data.content) alert(err.data.content);
         clearLocalStorage();
         this.$router.push("/");
       }
@@ -75,6 +75,9 @@ export default {
     },
     room_left: function() {
       console.log("I left the room");
+    },
+    game_started: function(data) {
+      console.log("game started guys!!", data);
     }
   },
   mounted() {
