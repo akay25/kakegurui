@@ -12,6 +12,7 @@
           :height="cardHeight"
           :width="cardWidth"
           :frontImage="cover"
+          :backImage="backImage"
           :index="index"
           :flipEnabled="
             isCurrentTurnMine && (!isFlipped || index === selectedID)
@@ -51,12 +52,16 @@ export default {
       isFlipped: false,
       selectedID: -1,
       selectedCardClass: "",
-      shuffleTypes: ["Slow", "Medium", "Fast"]
+      shuffleTypes: ["Slow", "Medium", "Fast"],
+      backImage: this.cover
     };
   },
   sockets: {
     card_flipped: function({ cardIndex, direction }) {
       this.flipCardManually(cardIndex, direction);
+    },
+    set_back_image(imageUrl) {
+      this.backImage = imageUrl;
     }
   },
   computed: {
@@ -79,13 +84,13 @@ export default {
     handleFlip(e) {
       if (this.isCurrentTurnMine) {
         if (!e.val) {
-          this.isFlipped = false;
-          this.selectedID = -1;
           this.$socket.emit("i_flipped_card", {
             cardIndex: e.id,
             direction: "down"
           });
+          this.clearCardAfterFlip();
         } else if (!this.isFlipped && e.val) {
+          this.backImage = this.cover;
           this.isFlipped = true;
           this.selectedID = e.id;
           this.$socket.emit("i_flipped_card", {
@@ -100,10 +105,16 @@ export default {
       this.selectedCardClass = "wrong-card";
     },
     flipCardManually(cardIndex, direction = "up") {
+      this.backImage = this.cover;
       const selectedCard = this.$refs[`card_${cardIndex}`];
       if (!!selectedCard) {
         selectedCard.flipMe(direction === "up");
       }
+    },
+    clearCardAfterFlip() {
+      this.isFlipped = false;
+      this.selectedID = -1;
+      this.backImage = this.cover;
     }
   }
 };
