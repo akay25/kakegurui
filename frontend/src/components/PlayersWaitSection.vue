@@ -2,7 +2,11 @@
   <div class="overlay-container" v-if="!isGameRunning">
     <div class="row">
       <div class="flex md4 xs12">
-        <va-button color="#fca311" @click="startGame" v-if="isOwner"
+        <va-button
+          color="#fca311"
+          @click="startGame"
+          v-if="isOwner"
+          :disabled="canStartGame"
           >Start Game</va-button
         >
         <br />
@@ -43,7 +47,10 @@ export default {
       "roomName",
       "playerId",
       "token"
-    ])
+    ]),
+    canStartGame() {
+      return this.room.players.length < 2;
+    }
   },
   methods: {
     ...mapMutations(["setLoading"]),
