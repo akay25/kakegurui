@@ -4,7 +4,7 @@ import { Module } from "vuex";
 // import { mutations } from './mutations';
 import { PlayerState, RootState } from "../types";
 
-interface RoomState {
+export interface RoomState {
   id: String | undefined;
   players: any;
   status: String;

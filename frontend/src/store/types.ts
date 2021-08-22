@@ -19,7 +19,7 @@ export interface RootState {
   isLoading: Boolean;
 }
 
-interface RoomState {
+export interface RoomState {
   id: String | undefined;
   players: any;
   status: String;
