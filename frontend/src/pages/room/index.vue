@@ -42,7 +42,8 @@ export default {
       "room",
       "totalCardsCount",
       "isCurrentTurnMine",
-      "nextTurnTimestamp"
+      "nextTurnTimestamp",
+      "currentPlayer"
     ]),
     socketConnected() {
       return this.$socket.connected;
@@ -100,6 +101,15 @@ export default {
         this.setCurrentPlayer(player);
         if (this.timerInterval) clearInterval(this.timerInterval);
         this.timerInterval = setInterval(this.setTimeProgress, 1000);
+
+        // Notify user for turn
+        this.$vaToast.init({
+          message: `It's ${
+            this.isCurrentTurnMine ? "your" : player.name + "'s"
+          } turn`,
+          position: "top-right",
+          duration: 800
+        });
       } else {
         console.log("Got invalid player for player in room");
       }
@@ -112,6 +122,13 @@ export default {
 
     if (this.timerInterval) clearInterval(this.timerInterval);
     this.timerInterval = setInterval(this.setTimeProgress, 1000);
+    this.$vaToast.init({
+      message: `It's ${
+        this.isCurrentTurnMine ? "your" : this.currentPlayer.name + "'s"
+      } turn`,
+      position: "top-right",
+      duration: 800
+    });
   },
   methods: {
     ...mapMutations([

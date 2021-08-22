@@ -1,6 +1,6 @@
 // profile/getters.ts
 import { GetterTree } from "vuex";
-import { RoomState, RootState } from "./types";
+import { PlayerState, RoomState, RootState } from "./types";
 
 const getters: GetterTree<any, RootState> = {
   // App configuration
@@ -32,6 +32,9 @@ const getters: GetterTree<any, RootState> = {
   },
   roomName(state): String {
     return state.room !== null ? state.room.name : "";
+  },
+  currentPlayer(state): PlayerState {
+    return state.room.currentPlayer;
   },
   isGameRunning(state): Boolean {
     return state.room !== null && state.room.status === "playing";
