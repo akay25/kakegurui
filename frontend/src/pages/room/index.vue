@@ -4,8 +4,8 @@
       <div class="row">
         <div class="flex xs12">
           <va-progress-bar
-            :modelValue="99"
-            v-if="isCurrentTurnMine"
+            :modelValue="timeProgress"
+            :color="isCurrentTurnMine ? '#fca311' : '#e5e5e5'"
           ></va-progress-bar>
         </div>
       </div>
@@ -29,8 +29,10 @@ export default {
   data() {
     return {
       roomID: this.$route.params.roomID,
+      timeProgress: 100,
       // This will changed on given type of card
-      cover: "https://pngimg.com/uploads/pokemon_logo/pokemon_logo_PNG12.png"
+      cover: "https://pngimg.com/uploads/pokemon_logo/pokemon_logo_PNG12.png",
+      timerInterval: null
     };
   },
   computed: {
@@ -39,7 +41,8 @@ export default {
       "isGameRunning",
       "room",
       "totalCardsCount",
-      "isCurrentTurnMine"
+      "isCurrentTurnMine",
+      "nextTurnTimestamp"
     ]),
     socketConnected() {
       return this.$socket.connected;
@@ -90,12 +93,25 @@ export default {
         deckCardsCount: data.deckRange,
         removedCardIndices: data.removedCardIndices
       });
+    },
+    player_changed: function({ player, nextTurnTime }) {
+      if (!!player) {
+        this.setRoom({ nextTurnTime });
+        this.setCurrentPlayer(player);
+        if (this.timerInterval) clearInterval(this.timerInterval);
+        this.timerInterval = setInterval(this.setTimeProgress, 1000);
+      } else {
+        console.log("Got invalid player for player in room");
+      }
     }
   },
   mounted() {
     if (!!this.$socket.io.opts.extraHeaders.authorization) {
       this.$socket.connect();
     }
+
+    if (this.timerInterval) clearInterval(this.timerInterval);
+    this.timerInterval = setInterval(this.setTimeProgress, 1000);
   },
   methods: {
     ...mapMutations([
@@ -109,6 +125,7 @@ export default {
       try {
         const response = await axios(`/rooms/${roomID}`);
         this.setRoom(response.data);
+        console.log(response.data);
         if (response.data.status === "playing") {
           this.setCurrentPlayer(
             response.data.players[response.data.currentPlayer]
@@ -127,9 +144,16 @@ export default {
     },
     leaveRoom() {
       this.$socket.emit("leave_room");
+    },
+    setTimeProgress() {
+      const currentTime = new Date().getTime() / 1000;
+      this.timeProgress = ((this.nextTurnTimestamp - currentTime) * 100) / 120;
     }
   },
   beforeUnmount() {
+    if (!!this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
     this.$socket.disconnect();
   }
 };

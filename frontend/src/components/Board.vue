@@ -30,7 +30,7 @@
 import Card from "@/components/Card/index.vue";
 import ImageHolder from "@/components/Card/ImageHolder.vue";
 import _ from "lodash";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "board",
   components: {
@@ -45,6 +45,14 @@ export default {
       type: String,
       default: "shuffleSlow"
     }
+  },
+  computed: {
+    ...mapGetters([
+      "deckCards",
+      "isCurrentTurnMine",
+      "selectedCard",
+      "prevSelectedCard"
+    ])
   },
   data() {
     return {
@@ -61,23 +69,12 @@ export default {
     card_flipped: function({ cardIndex, direction }) {
       this.flipCardManually(cardIndex, direction);
     },
-    next_player_turn: function(player_id) {
-      console.log("player turn", player_id);
-    },
     close_open_cards: function(cards) {
       // TODO: Close all open cards
     }
   },
   created() {
     this.cardsIndexArray = this.deckCards;
-  },
-  computed: {
-    ...mapGetters([
-      "deckCards",
-      "isCurrentTurnMine",
-      "selectedCard",
-      "prevSelectedCard"
-    ])
   },
   watch: {
     selectedCardClass(newVal) {

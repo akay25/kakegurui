@@ -25,8 +25,9 @@ interface RoomState {
   status: String;
   name: String;
   totalCards: Number;
-  deckCardsCount: Number;
   currentPlayer: PlayerState | null;
+  deckCardsCount: Number;
+  nextTurnTime: Date | null;
   selectedCard: Number;
   prevSelectedCard: Number;
   removedCardIndices: [Number] | [];

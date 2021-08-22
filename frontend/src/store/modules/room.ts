@@ -12,6 +12,7 @@ interface RoomState {
   totalCards: Number;
   currentPlayer: PlayerState | null;
   deckCardsCount: Number;
+  nextTurnTime: Date | null;
   selectedCard: Number;
   prevSelectedCard: Number;
   removedCardIndices: [Number] | [];
@@ -23,6 +24,7 @@ export const state: RoomState | null = {
   players: [],
   status: "suspend",
   totalCards: 0,
+  nextTurnTime: null,
   currentPlayer: null,
   deckCardsCount: 0,
   selectedCard: -1,

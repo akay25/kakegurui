@@ -36,6 +36,12 @@ const getters: GetterTree<any, RootState> = {
   isGameRunning(state): Boolean {
     return state.room !== null && state.room.status === "playing";
   },
+  nextTurnTimestamp(state): Number {
+    if (state.room.nextTurnTime) {
+      return new Date(state.room.nextTurnTime).getTime() / 1000;
+    }
+    return 0;
+  },
   totalCardsCount(state): Number {
     return state.room.totalCards;
   },
