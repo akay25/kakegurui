@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button @click="removeCard">Press Me</button>
     <transition-group name="flip-list" tag="div">
       <div
         v-for="index in cardsIndexArray"
@@ -68,11 +67,10 @@ export default {
     }
   },
   created() {
-    this.cardsIndexArray = [];
-    for (let i = 0; i < 20; i++) this.cardsIndexArray.push(i);
+    this.cardsIndexArray = this.deckCards;
   },
   computed: {
-    ...mapGetters(["totalCardsCount", "isCurrentTurnMine"])
+    ...mapGetters(["deckCards", "isCurrentTurnMine"])
   },
   watch: {
     selectedCardClass(newVal) {

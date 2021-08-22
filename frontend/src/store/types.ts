@@ -19,10 +19,15 @@ export interface RootState {
   isLoading: Boolean;
 }
 
-export interface RoomState {
+interface RoomState {
   id: String | undefined;
-  players: [PlayerState];
+  players: any;
   status: String;
   name: String;
   totalCards: Number;
+  deckCardsCount: Number;
+  currentPlayer: PlayerState | null;
+  selectedCard: Number;
+  prevSelectedCard: Number;
+  removedCardIndices: [Number] | [];
 }

@@ -85,7 +85,11 @@ export default {
     game_started: function(data) {
       this.setTotalCardsCount(data.totalCards);
       this.setCurrentPlayer(data.player);
-      this.setRoom({ status: "playing" });
+      this.setRoom({
+        status: "playing",
+        deckCardsCount: data.deckRange,
+        removedCardIndices: data.removedCardIndices
+      });
     }
   },
   mounted() {
@@ -106,7 +110,6 @@ export default {
         const response = await axios(`/rooms/${roomID}`);
         this.setRoom(response.data);
         if (response.data.status === "playing") {
-          this.setTotalCardsCount(104);
           this.setCurrentPlayer(
             response.data.players[response.data.currentPlayer]
           );

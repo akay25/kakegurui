@@ -35,6 +35,9 @@ export const mutations: MutationTree<any> = {
   setTotalCardsCount(state, payload: Number) {
     state.room.totalCards = payload;
   },
+  setDeckCardsCount(state, payload: Number) {
+    state.room.deckCardsCount = payload;
+  },
   setCurrentPlayer(state, payload: PlayerState) {
     state.room.currentPlayer = payload;
   }

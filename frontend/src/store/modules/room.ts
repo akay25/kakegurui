@@ -11,6 +11,10 @@ interface RoomState {
   name: String;
   totalCards: Number;
   currentPlayer: PlayerState | null;
+  deckCardsCount: Number;
+  selectedCard: Number;
+  prevSelectedCard: Number;
+  removedCardIndices: [Number] | [];
 }
 
 export const state: RoomState | null = {
@@ -19,7 +23,11 @@ export const state: RoomState | null = {
   players: [],
   status: "suspend",
   totalCards: 0,
-  currentPlayer: null
+  currentPlayer: null,
+  deckCardsCount: 0,
+  selectedCard: -1,
+  prevSelectedCard: -1,
+  removedCardIndices: []
 };
 
 export const room: Module<RoomState, RootState> = {

@@ -39,6 +39,18 @@ const getters: GetterTree<any, RootState> = {
   totalCardsCount(state): Number {
     return state.room.totalCards;
   },
+  deckSize(state): Number {
+    return state.room.deckCardsCount;
+  },
+  deckCards(state): number[] {
+    const tempCardsArray = [];
+    for (let i = 0; i < state.room.deckCardsCount; i++) {
+      if (!state.room.removedCardIndices.includes(i)) {
+        tempCardsArray.push(i);
+      }
+    }
+    return tempCardsArray;
+  },
   isCurrentTurnMine(state): Boolean {
     if (!state.room.currentPlayer) return false;
     return state.room.currentPlayer.id === state.player.id;

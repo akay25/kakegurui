@@ -53,7 +53,7 @@ export default {
       if (event === -1) {
         this.$emit("wrongCard", { currentCardId: this.index });
       } else {
-        this.$socket.emit("ask_for_back_image", this.index - 1);
+        this.$socket.emit("ask_for_back_image", this.index);
         this.$emit("flip", { id: this.index, val: event });
       }
     },
