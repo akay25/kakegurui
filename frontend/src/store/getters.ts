@@ -54,6 +54,12 @@ const getters: GetterTree<any, RootState> = {
   isCurrentTurnMine(state): Boolean {
     if (!state.room.currentPlayer) return false;
     return state.room.currentPlayer.id === state.player.id;
+  },
+  prevSelectedCard(state): Number {
+    return state.room.prevSelectedCard;
+  },
+  selectedCard(state): Number {
+    return state.room.selectedCard;
   }
 };
 

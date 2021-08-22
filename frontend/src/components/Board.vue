@@ -54,20 +54,30 @@ export default {
       selectedIDs: [],
       selectedCardClass: "",
       shuffleTypes: ["Slow", "Medium", "Fast"],
-      backImage: null,
       cardsIndexArray: []
     };
   },
   sockets: {
     card_flipped: function({ cardIndex, direction }) {
       this.flipCardManually(cardIndex, direction);
+    },
+    next_player_turn: function(player_id) {
+      console.log("player turn", player_id);
+    },
+    close_open_cards: function(cards) {
+      // TODO: Close all open cards
     }
   },
   created() {
     this.cardsIndexArray = this.deckCards;
   },
   computed: {
-    ...mapGetters(["deckCards", "isCurrentTurnMine"])
+    ...mapGetters([
+      "deckCards",
+      "isCurrentTurnMine",
+      "selectedCard",
+      "prevSelectedCard"
+    ])
   },
   watch: {
     selectedCardClass(newVal) {
@@ -82,6 +92,14 @@ export default {
       }
     }
   },
+  mounted() {
+    if (this.prevSelectedCard !== -1) {
+      this.flipCardManually(this.prevSelectedCard);
+    }
+    if (this.isCurrentTurnMine && this.selectedCard !== -1) {
+      this.flipCardManually(this.selectedCard);
+    }
+  },
   methods: {
     handleFlip(e) {
       if (this.isCurrentTurnMine) {
@@ -90,18 +108,12 @@ export default {
             cardIndex: e.id,
             direction: "down"
           });
-          this.backImage = null;
           const index = this.selectedIDs.indexOf(e.id);
           if (index > -1) {
             this.selectedIDs.splice(index, 1);
           }
         } else if (this.selectedIDs.length < 2 && e.val) {
-          this.backImage = null;
           this.selectedIDs.push(e.id);
-          this.$socket.emit("i_flipped_card", {
-            cardIndex: e.id,
-            direction: "up"
-          });
         }
         this.selectedCardClass = "";
       }
@@ -113,6 +125,12 @@ export default {
       this.backImage = null;
       const selectedCard = this.$refs[`card_${cardIndex}`];
       if (!!selectedCard) {
+        if (direction === "down") {
+          const index = this.selectedIDs.indexOf(cardIndex);
+          if (index > -1) {
+            this.selectedIDs.splice(index, 1);
+          }
+        }
         selectedCard.flipMe(direction === "up");
       }
     },
