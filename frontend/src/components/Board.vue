@@ -8,14 +8,15 @@
       >
         <card
           :ref="`card_${index}`"
-          :class="index === selectedID ? selectedCardClass : 'on-hover'"
+          :class="selectedIDs.includes(index) ? selectedCardClass : 'on-hover'"
           :height="cardHeight"
           :width="cardWidth"
-          :frontImage="cover"
-          :backImage="backImage"
+          :cover="cover"
           :index="index"
           :flipEnabled="
-            isCurrentTurnMine && (!isFlipped || index === selectedID)
+            isCurrentTurnMine &&
+              (selectedIDs.length < 2 ||
+                (selectedIDs.length == 2 && selectedIDs.includes(index)))
           "
           @flip="handleFlip"
           @wrongCard="handleWrongCard"
@@ -50,8 +51,7 @@ export default {
       cardHeight: 160,
       cardWidth: 120,
       dragging: false,
-      isFlipped: false,
-      selectedID: -1,
+      selectedIDs: [],
       selectedCardClass: "",
       shuffleTypes: ["Slow", "Medium", "Fast"],
       backImage: null,
@@ -61,9 +61,6 @@ export default {
   sockets: {
     card_flipped: function({ cardIndex, direction }) {
       this.flipCardManually(cardIndex, direction);
-    },
-    set_back_image(imageUrl) {
-      this.backImage = imageUrl;
     }
   },
   created() {
@@ -93,13 +90,16 @@ export default {
             cardIndex: e.id,
             direction: "down"
           });
-          this.clearCardAfterFlip();
-        } else if (!this.isFlipped && e.val) {
           this.backImage = null;
-          this.isFlipped = true;
-          this.selectedID = e.id;
+          const index = this.selectedIDs.indexOf(e.id);
+          if (index > -1) {
+            this.selectedIDs.splice(index, 1);
+          }
+        } else if (this.selectedIDs.length < 2 && e.val) {
+          this.backImage = null;
+          this.selectedIDs.push(e.id);
           this.$socket.emit("i_flipped_card", {
-            cardIndex: this.selectedID,
+            cardIndex: e.id,
             direction: "up"
           });
         }
@@ -115,11 +115,6 @@ export default {
       if (!!selectedCard) {
         selectedCard.flipMe(direction === "up");
       }
-    },
-    clearCardAfterFlip() {
-      this.isFlipped = false;
-      this.selectedID = -1;
-      this.backImage = null;
     },
     removeCard(wonCards = []) {
       this.cardsIndexArray = _.remove(

@@ -7,7 +7,7 @@
     @flip="handleFlip"
   >
     <template v-slot:front>
-      <image-holder :image="frontImage" />
+      <image-holder :image="cover" />
     </template>
     <template v-slot:back>
       <image-holder :image="backImage" />
@@ -25,10 +25,7 @@ export default {
     ImageHolder
   },
   props: {
-    frontImage: {
-      type: String
-    },
-    backImage: {
+    cover: {
       type: String
     },
     width: {
@@ -47,13 +44,31 @@ export default {
       default: true
     }
   },
+  data() {
+    return {
+      backImage: null
+    };
+  },
+  computed: {
+    getEventName() {
+      return `set_back_image_${this.index}`;
+    }
+  },
+  created() {
+    this.sockets.subscribe(this.getEventName, imgURL => {
+      this.backImage = imgURL;
+    });
+  },
   emits: ["flip", "wrongCard"],
   methods: {
     handleFlip(event) {
       if (event === -1) {
         this.$emit("wrongCard", { currentCardId: this.index });
       } else {
-        this.$socket.emit("ask_for_back_image", this.index);
+        if (event) {
+          // Only ask for image when flipped
+          this.$socket.emit("ask_for_back_image", this.index);
+        }
         this.$emit("flip", { id: this.index, val: event });
       }
     },
@@ -67,6 +82,9 @@ export default {
         }
       }
     }
+  },
+  beforeUnmount() {
+    this.sockets.unsubscribe(this.getEventName);
   }
 };
 </script>
