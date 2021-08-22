@@ -53,7 +53,7 @@ export default {
       selectedID: -1,
       selectedCardClass: "",
       shuffleTypes: ["Slow", "Medium", "Fast"],
-      backImage: this.cover
+      backImage: null
     };
   },
   sockets: {
@@ -90,7 +90,7 @@ export default {
           });
           this.clearCardAfterFlip();
         } else if (!this.isFlipped && e.val) {
-          this.backImage = this.cover;
+          this.backImage = null;
           this.isFlipped = true;
           this.selectedID = e.id;
           this.$socket.emit("i_flipped_card", {
@@ -105,7 +105,7 @@ export default {
       this.selectedCardClass = "wrong-card";
     },
     flipCardManually(cardIndex, direction = "up") {
-      this.backImage = this.cover;
+      this.backImage = null;
       const selectedCard = this.$refs[`card_${cardIndex}`];
       if (!!selectedCard) {
         selectedCard.flipMe(direction === "up");
@@ -114,7 +114,7 @@ export default {
     clearCardAfterFlip() {
       this.isFlipped = false;
       this.selectedID = -1;
-      this.backImage = this.cover;
+      this.backImage = null;
     }
   }
 };
