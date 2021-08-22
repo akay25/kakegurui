@@ -1,8 +1,9 @@
 <template>
   <div>
+    <button @click="removeCard">Press Me</button>
     <transition-group name="flip-list" tag="div">
       <div
-        v-for="index in totalCardsCount"
+        v-for="index in cardsIndexArray"
         :key="index"
         style="display: inline-block;"
       >
@@ -28,6 +29,7 @@
 <script>
 import Card from "@/components/Card/index.vue";
 import ImageHolder from "@/components/Card/ImageHolder.vue";
+import _ from "lodash";
 import { mapGetters } from "vuex";
 export default {
   name: "board",
@@ -53,7 +55,8 @@ export default {
       selectedID: -1,
       selectedCardClass: "",
       shuffleTypes: ["Slow", "Medium", "Fast"],
-      backImage: null
+      backImage: null,
+      cardsIndexArray: []
     };
   },
   sockets: {
@@ -63,6 +66,10 @@ export default {
     set_back_image(imageUrl) {
       this.backImage = imageUrl;
     }
+  },
+  created() {
+    this.cardsIndexArray = [];
+    for (let i = 0; i < 20; i++) this.cardsIndexArray.push(i);
   },
   computed: {
     ...mapGetters(["totalCardsCount", "isCurrentTurnMine"])
@@ -115,6 +122,12 @@ export default {
       this.isFlipped = false;
       this.selectedID = -1;
       this.backImage = null;
+    },
+    removeCard(wonCards = []) {
+      this.cardsIndexArray = _.remove(
+        this.cardsIndexArray,
+        e => e != wonCards[0] && e != wonCards[1]
+      );
     }
   }
 };
@@ -123,6 +136,17 @@ export default {
 <style lang="scss">
 .flip-list-move {
   transition: transform 0.8s ease;
+}
+
+.flip-list-enter-active,
+.flip-list-leave-active {
+  transition: all 1s;
+}
+
+.flip-list-enter,
+.flip-list-leave-to {
+  opacity: 0;
+  transform: translateY(50px);
 }
 
 .deck {
@@ -147,16 +171,6 @@ export default {
 
 .shuffleFast-move {
   transition: transform 0.5s;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
 }
 
 @media (max-width: 1210px) {
