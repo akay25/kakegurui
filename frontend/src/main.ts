@@ -10,6 +10,13 @@ import store from "./store";
 import { loadFromLocalStorage } from "@/utils";
 import vuesticGlobalConfig from "./services/vuestic-ui/global-config";
 
+// TODO: Can't use this library cause it uses Vue2 instead of Vue3,
+// when updated please make sure to use this library
+// import VueToast from "vue-toast-notification";
+// // Import one of the available themes
+// //import 'vue-toast-notification/dist/theme-default.css';
+// import "vue-toast-notification/dist/theme-sugar.css";
+
 const i18nConfig = {
   locale: "en",
   fallbackLocale: "en",
@@ -43,6 +50,7 @@ app.use(
 );
 
 app.use(router);
+// app.use(VueToast);
 app.use(createI18n(i18nConfig));
 app.use(VuesticPlugin, vuesticGlobalConfig);
 
