@@ -79,7 +79,6 @@ export default {
     },
     room_updated: function(room) {
       this.setRoom({ players: room.players });
-      console.log("Room updated");
     },
     room_joined: function() {
       console.log("room joined here");
@@ -124,13 +123,6 @@ export default {
     if (this.isGameRunning) {
       if (this.timerInterval) clearInterval(this.timerInterval);
       this.timerInterval = setInterval(this.setTimeProgress, 1000);
-      this.$vaToast.init({
-        message: `It's ${
-          this.isCurrentTurnMine ? "your" : this.currentPlayer.name + "'s"
-        } turn`,
-        position: "top-right",
-        duration: 800
-      });
     }
   },
   methods: {
@@ -145,7 +137,6 @@ export default {
       try {
         const response = await axios(`/rooms/${roomID}`);
         this.setRoom(response.data);
-        console.log(response.data);
         if (response.data.status === "playing") {
           this.setCurrentPlayer(
             response.data.players[response.data.currentPlayer]
