@@ -95,6 +95,9 @@ export default {
         removedCardIndices: data.removedCardIndices
       });
     },
+    invalid_player_request: function(message) {
+      console.log(message);
+    },
     player_changed: function({ player, nextTurnTime }) {
       if (!!player) {
         this.setRoom({ nextTurnTime });
