@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import FlipCard from "./FlipCard.vue";
 import ImageHolder from "./ImageHolder.vue";
 export default {
@@ -47,54 +48,39 @@ export default {
   },
   data() {
     return {
-      backImage:
-        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/006.png",
+      backImage: null,
       flipped: false
     };
   },
   computed: {
-    getFlipUpEventName() {
-      return `flip_card_up_${this.index}`;
-    },
-    getFlipDownEventName() {
-      return `flip_card_down_${this.index}`;
-    }
+    ...mapGetters(["isCurrentTurnMine"])
   },
-  created() {
-    this.sockets.subscribe(this.getFlipUpEventName, imgURL => {
-      this.flipped = true;
-      this.backImage = imgURL;
-      this.$emit("flip", { id: this.index, val: this.flipped });
-    });
-    this.sockets.subscribe(this.getFlipDownEventName, () => {
-      this.flipped = false;
-      this.backImage = null;
-      this.$emit("flip", { id: this.index, val: this.flipped });
-    });
-  },
-  emits: ["flip", "wrongCard"],
   methods: {
+    // This function is called when user flips the card
     handleClick() {
-      if (this.flipEnabled) {
+      if (this.flipEnabled && this.isCurrentTurnMine) {
         this.$socket.emit("ask_for_card_flip", {
           id: this.index,
           direction: !this.flipped ? "up" : "down"
         });
-        console.log("emitted");
-      } else {
-        this.$emit("wrongCard", { currentCardId: this.index });
       }
+    },
+    // THis function is called when server forcefully flips the card
+    flipMeUp(imgURL) {
+      this.backImage = imgURL;
+      this.flipMe(true);
+    },
+    flipMeDown() {
+      this.backImage = null;
+      this.flipMe(false);
     },
     flipMe(toBack = true) {
       if (toBack) {
-        this.flipped = false;
-      } else {
         this.flipped = true;
+      } else {
+        this.flipped = false;
       }
     }
-  },
-  beforeUnmount() {
-    this.sockets.unsubscribe(this.getEventName);
   }
 };
 </script>

@@ -13,13 +13,7 @@
           :width="cardWidth"
           :cover="cover"
           :index="index"
-          :flipEnabled="
-            isCurrentTurnMine &&
-              (selectedIDs.length < 2 ||
-                (selectedIDs.length == 2 && selectedIDs.includes(index)))
-          "
-          @flip="handleFlip"
-          @wrongCard="handleWrongCard"
+          :flipEnabled="isCurrentTurnMine"
         />
       </div>
     </transition-group>
@@ -30,7 +24,7 @@
 import Card from "@/components/Card/index.vue";
 import ImageHolder from "@/components/Card/ImageHolder.vue";
 import _ from "lodash";
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   name: "board",
   components: {
@@ -40,10 +34,6 @@ export default {
   props: {
     cover: {
       type: String
-    },
-    shuffleSpeed: {
-      type: String,
-      default: "shuffleSlow"
     }
   },
   computed: {
@@ -65,16 +55,17 @@ export default {
       cardsIndexArray: []
     };
   },
-  sockets: {
-    card_flipped: function({ cardIndex, direction }) {
-      this.flipCardManually(cardIndex, direction);
-    },
-    close_open_cards: function(cards) {
-      // TODO: Close all open cards
-    }
-  },
   created() {
     this.cardsIndexArray = this.deckCards;
+  },
+  sockets: {
+    flip_card: function(card) {
+      this.flipCardManually(card.id, card.image, card.direction);
+    },
+    wrong_card: function(cards) {
+      this.selectedIDs = [cards.card1, cards.card2];
+      this.handleWrongCards();
+    }
   },
   watch: {
     selectedCardClass(newVal) {
@@ -98,28 +89,10 @@ export default {
     }
   },
   methods: {
-    handleFlip(e) {
-      if (this.isCurrentTurnMine) {
-        if (!e.val) {
-          this.$socket.emit("i_flipped_card", {
-            cardIndex: e.id,
-            direction: "down"
-          });
-          const index = this.selectedIDs.indexOf(e.id);
-          if (index > -1) {
-            this.selectedIDs.splice(index, 1);
-          }
-        } else if (this.selectedIDs.length < 2 && e.val) {
-          this.selectedIDs.push(e.id);
-        }
-        this.selectedCardClass = "";
-      }
-    },
-    handleWrongCard(e) {
+    handleWrongCards() {
       this.selectedCardClass = "wrong-card";
     },
-    flipCardManually(cardIndex, direction = "up") {
-      this.backImage = null;
+    flipCardManually(cardIndex, imgURL = null, direction = "up") {
       const selectedCard = this.$refs[`card_${cardIndex}`];
       if (!!selectedCard) {
         if (direction === "down") {
@@ -127,8 +100,11 @@ export default {
           if (index > -1) {
             this.selectedIDs.splice(index, 1);
           }
+          selectedCard.flipMeDown();
+        } else {
+          this.selectedIDs.push(cardIndex);
+          selectedCard.flipMeUp(imgURL);
         }
-        selectedCard.flipMe(direction === "up");
       }
     },
     removeCard(wonCards = []) {
