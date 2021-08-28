@@ -20,6 +20,7 @@ import { mapGetters, mapMutations } from "vuex";
 import Board from "@/components/Board.vue";
 import axios from "@/api";
 import { clearLocalStorage } from "@/utils";
+import MAX_WAIT_TIME from "@/data/wait-time";
 
 export default {
   name: "room",
@@ -166,7 +167,8 @@ export default {
     },
     setTimeProgress() {
       const currentTime = new Date().getTime() / 1000;
-      this.timeProgress = ((this.nextTurnTimestamp - currentTime) * 100) / 120;
+      this.timeProgress =
+        ((this.nextTurnTimestamp - currentTime) * 100) / MAX_WAIT_TIME;
     }
   },
   beforeUnmount() {
