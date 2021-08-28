@@ -4,10 +4,10 @@
     :style="`height: ${height}px; width: ${width}px;`"
   >
     <div class="flipper">
-      <div class="slot-container front" v-on:click="toggleFront()">
+      <div class="slot-container front">
         <slot name="front"></slot>
       </div>
-      <div class="slot-container back" v-on:click="toggleBack()">
+      <div class="slot-container back">
         <slot name="back"></slot>
       </div>
     </div>
@@ -29,30 +29,10 @@ export default {
     enabled: {
       type: Boolean,
       default: true
-    }
-  },
-  emits: ["flip"],
-  data: function() {
-    return {
-      flipped: false
-    };
-  },
-  methods: {
-    toggleFront(forced = false) {
-      if (this.enabled || forced) {
-        this.flipped = true;
-        this.$emit("flip", true);
-      } else {
-        this.$emit("flip", -1);
-      }
     },
-    toggleBack(forced = false) {
-      if (this.enabled || forced) {
-        this.flipped = false;
-        this.$emit("flip", false);
-      } else {
-        this.$emit("flip", -1);
-      }
+    flipped: {
+      type: Boolean,
+      default: false
     }
   }
 };

@@ -4,7 +4,8 @@
     :width="width"
     :enabled="flipEnabled"
     :ref="`flip_component_${index}`"
-    @flip="handleFlip"
+    :flipped="flipped"
+    @click="handleClick"
   >
     <template v-slot:front>
       <image-holder :image="cover" />
@@ -46,40 +47,49 @@ export default {
   },
   data() {
     return {
-      backImage: null
+      backImage:
+        "https://assets.pokemon.com/assets/cms2/img/pokedex/full/006.png",
+      flipped: false
     };
   },
   computed: {
-    getEventName() {
-      return `set_back_image_${this.index}`;
+    getFlipUpEventName() {
+      return `flip_card_up_${this.index}`;
+    },
+    getFlipDownEventName() {
+      return `flip_card_down_${this.index}`;
     }
   },
   created() {
-    this.sockets.subscribe(this.getEventName, imgURL => {
+    this.sockets.subscribe(this.getFlipUpEventName, imgURL => {
+      this.flipped = true;
       this.backImage = imgURL;
+      this.$emit("flip", { id: this.index, val: this.flipped });
+    });
+    this.sockets.subscribe(this.getFlipDownEventName, () => {
+      this.flipped = false;
+      this.backImage = null;
+      this.$emit("flip", { id: this.index, val: this.flipped });
     });
   },
   emits: ["flip", "wrongCard"],
   methods: {
-    handleFlip(event) {
-      if (event === -1) {
-        this.$emit("wrongCard", { currentCardId: this.index });
+    handleClick() {
+      if (this.flipEnabled) {
+        this.$socket.emit("ask_for_card_flip", {
+          id: this.index,
+          direction: !this.flipped ? "up" : "down"
+        });
+        console.log("emitted");
       } else {
-        if (event) {
-          // Only ask for image when flipped
-          this.$socket.emit("ask_for_back_image", this.index);
-        }
-        this.$emit("flip", { id: this.index, val: event });
+        this.$emit("wrongCard", { currentCardId: this.index });
       }
     },
     flipMe(toBack = true) {
-      const flipComponent = this.$refs[`flip_component_${this.index}`];
-      if (!!flipComponent) {
-        if (toBack) {
-          flipComponent.toggleFront(true);
-        } else {
-          flipComponent.toggleBack(true);
-        }
+      if (toBack) {
+        this.flipped = false;
+      } else {
+        this.flipped = true;
       }
     }
   },
