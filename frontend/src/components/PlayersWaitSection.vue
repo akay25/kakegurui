@@ -49,7 +49,7 @@ export default {
       "token"
     ]),
     canStartGame() {
-      return this.room.players.length < 2;
+      return !!this.room && !!this.room.players && this.room.players.length < 2;
     }
   },
   methods: {

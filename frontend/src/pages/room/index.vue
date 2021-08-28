@@ -120,15 +120,17 @@ export default {
       this.$socket.connect();
     }
 
-    if (this.timerInterval) clearInterval(this.timerInterval);
-    this.timerInterval = setInterval(this.setTimeProgress, 1000);
-    this.$vaToast.init({
-      message: `It's ${
-        this.isCurrentTurnMine ? "your" : this.currentPlayer.name + "'s"
-      } turn`,
-      position: "top-right",
-      duration: 800
-    });
+    if (this.isGameRunning) {
+      if (this.timerInterval) clearInterval(this.timerInterval);
+      this.timerInterval = setInterval(this.setTimeProgress, 1000);
+      this.$vaToast.init({
+        message: `It's ${
+          this.isCurrentTurnMine ? "your" : this.currentPlayer.name + "'s"
+        } turn`,
+        position: "top-right",
+        duration: 800
+      });
+    }
   },
   methods: {
     ...mapMutations([
