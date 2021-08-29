@@ -58,7 +58,6 @@ export default {
     }
 
     const validRoomID = await this.validateRoomID(this.roomID);
-    console.log(validRoomID, this.roomID, this.token);
     if (!validRoomID) {
       alert("Invalid room ID");
       clearLocalStorage();
@@ -125,7 +124,6 @@ export default {
     }
   },
   mounted() {
-    console.log("token", this.token);
     if (!!this.$socket.io.opts.extraHeaders.authorization) {
       this.$socket.connect();
     }

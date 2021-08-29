@@ -80,7 +80,6 @@ export default {
   },
   sockets: {
     set_score: function(score) {
-      console.log("setting socre", score);
       this.setScore(score);
     }
   },
