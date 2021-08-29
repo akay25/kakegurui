@@ -24,7 +24,7 @@
 import Card from "@/components/Card/index.vue";
 import ImageHolder from "@/components/Card/ImageHolder.vue";
 import _ from "lodash";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "board",
   components: {
@@ -74,8 +74,9 @@ export default {
       this.selectedIDs = [cards.card1, cards.card2];
       this.handleWrongCards();
     },
-    remove_cards: function(cards) {
-      this.removeCard(cards);
+    remove_cards: function({ removedCards, deckSize }) {
+      this.setRemovedCards(removedCards);
+      this.setDeckCardsCount(deckSize);
     }
   },
   watch: {
@@ -98,6 +99,7 @@ export default {
     this.$socket.emit("ask_for_flipped_cards");
   },
   methods: {
+    ...mapMutations(["setDeckCardsCount", "setRemovedCards"]),
     handleWrongCards() {
       this.selectedCardClass = "wrong-card";
     },
@@ -115,12 +117,6 @@ export default {
           selectedCard.flipMeUp(imgURL);
         }
       }
-    },
-    removeCard(wonCards = []) {
-      this.cardsIndexArray = _.remove(
-        this.cardsIndexArray,
-        e => e != wonCards[0] && e != wonCards[1]
-      );
     }
   }
 };
