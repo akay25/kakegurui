@@ -39,6 +39,7 @@ export default {
   computed: {
     ...mapGetters([
       "deckCards",
+      "deckSize",
       "isCurrentTurnMine",
       "selectedCard",
       "prevSelectedCard"
@@ -88,6 +89,9 @@ export default {
           this
         );
       }
+    },
+    deckSize(_) {
+      this.cardsIndexArray = this.deckCards;
     }
   },
   mounted() {
