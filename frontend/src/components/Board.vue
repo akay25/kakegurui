@@ -81,12 +81,7 @@ export default {
     }
   },
   mounted() {
-    if (this.prevSelectedCard !== -1) {
-      this.flipCardManually(this.prevSelectedCard);
-    }
-    if (this.isCurrentTurnMine && this.selectedCard !== -1) {
-      this.flipCardManually(this.selectedCard);
-    }
+    this.$socket.emit("ask_for_flipped_cards");
   },
   methods: {
     handleWrongCards() {
