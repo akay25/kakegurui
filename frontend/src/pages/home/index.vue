@@ -78,15 +78,17 @@ export default {
   async created() {
     let validRoomID = false;
     // Check for existing player storage
-    if (!!this.token) {
+    if (!!this.token && !!this.roomName) {
       // Check for token and room id to make sure user is not doing double entry
-      validRoomID = await this.validateRoomID(this.roomName);
+      validRoomID = await this.validateRoomID(this.roomID);
       if (!!this.roomName && validRoomID) {
         this.$router.push({ path: `/room/${this.roomName}` });
       } else {
         // Clear everything and continue down
         clearLocalStorage();
       }
+    } else {
+      clearLocalStorage();
     }
 
     // Check if the given room ID is valid or not
