@@ -80,10 +80,11 @@ const getters: GetterTree<any, RootState> = {
     return state.room.totalCards;
   },
   deckSize(state): Number {
-    return state.room.deckCardsCount;
+    return !!state.room ? state.room.deckCardsCount : 0;
   },
   deckCards(state): number[] {
     const tempCardsArray = [];
+    const size = !!state.room ? state.room.deckCardsCount : 0;
     for (let i = 0; i < state.room.deckCardsCount; i++) {
       if (!state.room.removedCardIndices.includes(i)) {
         tempCardsArray.push(i);
