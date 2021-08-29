@@ -65,7 +65,7 @@ const getters: GetterTree<any, RootState> = {
     return state.room !== null ? state.room.name : "";
   },
   currentPlayer(state): PlayerState {
-    return state.room.currentPlayer;
+    return !!state.room ? state.room.currentPlayer : null;
   },
   isGameRunning(state): Boolean {
     return state.room !== null && state.room.status === "playing";
@@ -85,7 +85,7 @@ const getters: GetterTree<any, RootState> = {
   deckCards(state): number[] {
     const tempCardsArray = [];
     const size = !!state.room ? state.room.deckCardsCount : 0;
-    for (let i = 0; i < state.room.deckCardsCount; i++) {
+    for (let i = 0; i < size; i++) {
       if (!state.room.removedCardIndices.includes(i)) {
         tempCardsArray.push(i);
       }
@@ -93,7 +93,7 @@ const getters: GetterTree<any, RootState> = {
     return tempCardsArray;
   },
   isCurrentTurnMine(state): Boolean {
-    if (!state.room.currentPlayer) return false;
+    if (!state.room || !state.room.currentPlayer) return false;
     return state.room.currentPlayer.id === state.playerId;
   },
   prevSelectedCard(state): Number {

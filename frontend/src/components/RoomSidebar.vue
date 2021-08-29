@@ -21,7 +21,7 @@
         </h1>
       </div>
     </div>
-    <div class="row player-container">
+    <div class="row player-container" v-if="!!room && !!room.players">
       <Player
         v-for="player in room.players"
         :key="player.id"
