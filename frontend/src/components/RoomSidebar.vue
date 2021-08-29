@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="row container">
-      <filp-number :value="score" :speed="600" :digitCount="2" />
+      <filp-number :value="score" :speed="600" :digitCount="3" />
     </div>
     <div class="row">
       <div class="xs2">
