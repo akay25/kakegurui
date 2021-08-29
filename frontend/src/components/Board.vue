@@ -25,6 +25,8 @@ import Card from "@/components/Card/index.vue";
 import ImageHolder from "@/components/Card/ImageHolder.vue";
 import _ from "lodash";
 import { mapGetters, mapMutations } from "vuex";
+
+const CARD_RATIO = 18;
 export default {
   name: "board",
   components: {
@@ -47,8 +49,8 @@ export default {
   },
   data() {
     return {
-      cardHeight: 160,
-      cardWidth: 120,
+      cardHeight: 4 * CARD_RATIO,
+      cardWidth: 3 * CARD_RATIO,
       dragging: false,
       selectedIDs: [],
       selectedCardClass: "",
