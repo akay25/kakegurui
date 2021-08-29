@@ -44,7 +44,8 @@ export default {
       "totalCardsCount",
       "isCurrentTurnMine",
       "nextTurnTimestamp",
-      "currentPlayer"
+      "currentPlayer",
+      "playerId"
     ]),
     socketConnected() {
       return this.$socket.connected;
@@ -98,6 +99,11 @@ export default {
     invalid_player_request: function(message) {
       console.log(message);
     },
+    switch_player(after_secs) {
+      setTimeout(() => {
+        this.$socket.emit("switch_turn");
+      }, after_secs * 1000);
+    },
     player_changed: function({ player, nextTurnTime }) {
       if (!!player) {
         this.setRoom({ nextTurnTime });
@@ -132,6 +138,7 @@ export default {
     ...mapMutations([
       "setLoading",
       "setRoom",
+      "setPlayer",
       "setTotalCardsCount",
       "setCurrentPlayer"
     ]),
@@ -140,6 +147,15 @@ export default {
       try {
         const response = await axios(`/rooms/${roomID}`);
         this.setRoom(response.data);
+
+        const player = _.find(
+          response.data.players,
+          p => p.id === this.playerId
+        );
+        if (!!player) {
+          this.setPlayer(player);
+        }
+
         if (response.data.status === "playing") {
           this.setCurrentPlayer(
             response.data.players[response.data.currentPlayer]
