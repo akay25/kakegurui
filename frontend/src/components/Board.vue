@@ -72,6 +72,9 @@ export default {
     wrong_card: function(cards) {
       this.selectedIDs = [cards.card1, cards.card2];
       this.handleWrongCards();
+    },
+    remove_cards: function(cards) {
+      this.removeCard(cards);
     }
   },
   watch: {
