@@ -78,11 +78,14 @@ export default {
       "room"
     ])
   },
+  sockets: {
+    set_score: function(score) {
+      console.log("setting socre", score);
+      this.setScore(score);
+    }
+  },
   methods: {
-    ...mapMutations(["setLoading"]),
-    inc() {
-      this.counter++;
-    },
+    ...mapMutations(["setLoading", "setScore"]),
     leaveRoom() {
       this.$socket.emit("leave_room");
     },

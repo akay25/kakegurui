@@ -23,6 +23,9 @@ export const mutations: MutationTree<any> = {
     state.player.token = payload;
     localStorage.setItem("player", JSON.stringify(state.player));
   },
+  setScore(state, payload: Number) {
+    state.player.score = payload;
+  },
   // PLayer room
   setRoom(state, payload: RoomState) {
     if (payload !== null) {

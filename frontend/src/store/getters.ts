@@ -24,7 +24,7 @@ const getters: GetterTree<any, RootState> = {
     return state.player !== null ? state.player.owner : false;
   },
   score(state): Number {
-    return state.player !== null ? state.owner : 0.0;
+    return state.player !== null ? state.player.score : 0.0;
   },
   // Room status
   room(state): RoomState {
