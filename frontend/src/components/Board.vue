@@ -62,6 +62,12 @@ export default {
     flip_card: function(card) {
       this.flipCardManually(card.id, card.image, card.direction);
     },
+    flip_all_cards_down() {
+      for (let i = 0; i < this.selectedIDs.length; i++) {
+        const cardIndex = this.selectedIDs[i];
+        this.flipCardManually(cardIndex, null, "down");
+      }
+    },
     wrong_card: function(cards) {
       this.selectedIDs = [cards.card1, cards.card2];
       this.handleWrongCards();
@@ -91,16 +97,17 @@ export default {
       const selectedCard = this.$refs[`card_${cardIndex}`];
       if (!!selectedCard) {
         if (direction === "down") {
-          const index = this.selectedIDs.indexOf(cardIndex);
-          if (index > -1) {
-            this.selectedIDs.splice(index, 1);
-          }
+          const newArray = this.selectedIDs.filter(e => e !== cardIndex);
+          this.selectedIDs = newArray;
           selectedCard.flipMeDown();
         } else {
-          this.selectedIDs.push(cardIndex);
+          if (this.selectedIDs.includes(cardIndex) === false) {
+            this.selectedIDs.push(cardIndex);
+          }
           selectedCard.flipMeUp(imgURL);
         }
       }
+      console.log("After flipping the cards: ", this.selectedIDs);
     },
     removeCard(wonCards = []) {
       this.cardsIndexArray = _.remove(
