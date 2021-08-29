@@ -63,8 +63,9 @@ export default {
       this.flipCardManually(card.id, card.image, card.direction);
     },
     flip_all_cards_down() {
-      for (let i = 0; i < this.selectedIDs.length; i++) {
-        const cardIndex = this.selectedIDs[i];
+      const tempSelectedIndices = [...this.selectedIDs];
+      for (let i = 0; i < tempSelectedIndices.length; i++) {
+        const cardIndex = tempSelectedIndices[i];
         this.flipCardManually(cardIndex, null, "down");
       }
     },
@@ -107,7 +108,6 @@ export default {
           selectedCard.flipMeUp(imgURL);
         }
       }
-      console.log("After flipping the cards: ", this.selectedIDs);
     },
     removeCard(wonCards = []) {
       this.cardsIndexArray = _.remove(
