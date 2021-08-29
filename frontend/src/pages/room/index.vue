@@ -108,8 +108,8 @@ export default {
       if (!!player) {
         this.setRoom({ nextTurnTime });
         this.setCurrentPlayer(player);
-        if (this.timerInterval) clearInterval(this.timerInterval);
-        this.timerInterval = setInterval(this.setTimeProgress, 1000);
+        // if (this.timerInterval) clearInterval(this.timerInterval);
+        // this.timerInterval = setInterval(this.setTimeProgress, 1000);
 
         // Notify user for turn
         this.$vaToast.init({
@@ -130,8 +130,8 @@ export default {
     }
 
     if (this.isGameRunning) {
-      if (this.timerInterval) clearInterval(this.timerInterval);
-      this.timerInterval = setInterval(this.setTimeProgress, 1000);
+      // if (this.timerInterval) clearInterval(this.timerInterval);
+      // this.timerInterval = setInterval(this.setTimeProgress, 1000);
     }
   },
   methods: {
@@ -176,16 +176,16 @@ export default {
       this.$socket.emit("leave_room");
     },
     setTimeProgress() {
-      const currentTime = new Date().getTime() / 1000;
-      this.timeProgress =
-        ((this.nextTurnTimestamp - currentTime) * 100) / MAX_WAIT_TIME;
+      // const currentTime = new Date().getTime() / 1000;
+      // this.timeProgress =
+      //   ((this.nextTurnTimestamp - currentTime) * 100) / MAX_WAIT_TIME;
     }
   },
   beforeUnmount() {
-    if (!!this.timerInterval) {
-      clearInterval(this.timerInterval);
-    }
-    this.$socket.disconnect();
+    // if (!!this.timerInterval) {
+    //   clearInterval(this.timerInterval);
+    // }
+    // this.$socket.disconnect();
   }
 };
 </script>
