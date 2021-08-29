@@ -10,7 +10,10 @@ const store: StoreOptions<RootState> = {
     strict: true,
     version: "1.0.0", // a simple property
     isSidebarMinimized: false,
-    isLoading: false
+    isLoading: false,
+    //@ts-ignore
+    token: null,
+    playerId: ""
   },
   modules: {
     ...modules

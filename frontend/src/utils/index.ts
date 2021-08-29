@@ -7,16 +7,20 @@ export const loadFromLocalStorage = () => {
     store.commit("setRoom", room);
   }
 
-  const playerStr = localStorage.getItem("player");
-  if (playerStr !== null) {
-    const player = JSON.parse(playerStr);
-    store.commit("setPlayer", player);
+  const token = localStorage.getItem("token");
+  if (token !== null) {
+    store.commit("setToken", token);
+  }
+
+  const playerId = localStorage.getItem("playerId");
+  if (playerId !== null) {
+    store.commit("setPlayerId", playerId);
   }
 };
 
 export const clearLocalStorage = () => {
-  localStorage.removeItem("player");
+  localStorage.removeItem("token");
   localStorage.removeItem("room");
+  localStorage.removeItem("playerId");
   store.commit("setRoom", null);
-  store.commit("setPlayer", null);
 };

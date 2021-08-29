@@ -20,7 +20,7 @@ import { mapGetters, mapMutations } from "vuex";
 import Board from "@/components/Board.vue";
 import axios from "@/api";
 import { clearLocalStorage } from "@/utils";
-import MAX_WAIT_TIME from "@/data/wait-time";
+// import MAX_WAIT_TIME from "@/data/wait-time";
 
 export default {
   name: "room",
@@ -52,7 +52,7 @@ export default {
     }
   },
   async created() {
-    if (!this.token) {
+    if (!this.token || this.token === "") {
       clearLocalStorage();
       this.$router.push("/");
     }
@@ -125,6 +125,7 @@ export default {
     }
   },
   mounted() {
+    console.log("token", this.token);
     if (!!this.$socket.io.opts.extraHeaders.authorization) {
       this.$socket.connect();
     }
@@ -138,7 +139,6 @@ export default {
     ...mapMutations([
       "setLoading",
       "setRoom",
-      "setPlayer",
       "setTotalCardsCount",
       "setCurrentPlayer"
     ]),
@@ -147,14 +147,6 @@ export default {
       try {
         const response = await axios(`/rooms/${roomID}`);
         this.setRoom(response.data);
-
-        const player = _.find(
-          response.data.players,
-          p => p.id === this.playerId
-        );
-        if (!!player) {
-          this.setPlayer(player);
-        }
 
         if (response.data.status === "playing") {
           this.setCurrentPlayer(

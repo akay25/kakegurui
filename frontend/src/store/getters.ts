@@ -1,4 +1,6 @@
 // profile/getters.ts
+//@ts-ignore
+import _ from "lodash";
 import { GetterTree } from "vuex";
 import { PlayerState, RoomState, RootState } from "./types";
 
@@ -9,22 +11,51 @@ const getters: GetterTree<any, RootState> = {
   },
   // PLayer configuration
   playerId(state): String | null {
-    return state.player !== null ? state.player.id : null;
+    return state.playerId;
   },
   name(state): string {
-    return state.player !== null ? state.player.name : "";
+    if (!!state.room && !!state.room.players) {
+      const player = _.find(
+        state.room.players,
+        (p: any) => p.id === state.playerId
+      );
+      if (!!player) return player.name;
+    }
+    return "";
   },
   profilePic(state): string {
-    return state.player !== null ? state.player.profilePic : "1-5-7";
+    if (!!state.room && !!state.room.players) {
+      const player = _.find(
+        state.room.players,
+        (p: any) => p.id === state.playerId
+      );
+      if (!!player) return player.profilePic;
+    }
+    return "";
   },
   token(state): string | null {
-    return state.player !== null ? state.player.token : null;
+    if (!state.token) return localStorage.getItem("token");
+    return state.token;
   },
   isOwner(state): Boolean {
-    return state.player !== null ? state.player.owner : false;
+    if (!!state.room && !!state.room.players) {
+      const player = _.find(
+        state.room.players,
+        (p: any) => p.id === state.playerId
+      );
+      if (!!player) return player.owner;
+    }
+    return false;
   },
   score(state): Number {
-    return state.player !== null ? state.player.score : 0.0;
+    if (!!state.room && !!state.room.players) {
+      const player = _.find(
+        state.room.players,
+        (p: any) => p.id === state.playerId
+      );
+      if (!!player) return player.score;
+    }
+    return 0.0;
   },
   // Room status
   room(state): RoomState {
@@ -62,7 +93,7 @@ const getters: GetterTree<any, RootState> = {
   },
   isCurrentTurnMine(state): Boolean {
     if (!state.room.currentPlayer) return false;
-    return state.room.currentPlayer.id === state.player.id;
+    return state.room.currentPlayer.id === state.playerId;
   },
   prevSelectedCard(state): Number {
     return state.room.prevSelectedCard;

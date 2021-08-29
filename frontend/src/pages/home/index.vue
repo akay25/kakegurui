@@ -102,7 +102,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setLoading", "setRoom", "setPlayer", "setToken"]),
+    ...mapMutations(["setLoading", "setRoom", "setPlayerId", "setToken"]),
     async loadProfilePic() {
       if ("profilePicMaker" in this.$refs) {
         try {
@@ -154,7 +154,7 @@ export default {
     leaveThisPage(data) {
       this.$socket.io.opts.extraHeaders.authorization = data.token;
       this.setRoom(data.room);
-      this.setPlayer(data.player);
+      this.setPlayerId(data.player.id);
       this.setToken(data.token);
       this.$router.push({ path: `/room/${data.room.name}` });
     }

@@ -1,8 +1,3 @@
-enum RoomStatus {
-  Suspend = 0,
-  Playing
-}
-
 export interface PlayerState {
   id: String | undefined;
   name: string;
@@ -17,6 +12,8 @@ export interface RootState {
   version: string;
   isSidebarMinimized: Boolean;
   isLoading: Boolean;
+  token: String | null;
+  playerId: String;
 }
 
 export interface RoomState {

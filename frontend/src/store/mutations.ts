@@ -11,20 +11,23 @@ export const mutations: MutationTree<any> = {
     state.isLoading = payload;
   },
   // Player info
-  setPlayer(state, payload: PlayerState) {
-    if (payload !== null) {
-      state.player = { ...state.player, ...payload };
-      localStorage.setItem("player", JSON.stringify(state.player));
-    } else {
-      state.player = null;
-    }
+  setPlayerId(state, payload: string) {
+    state.playerId = payload;
+    localStorage.setItem("playerId", payload);
   },
-  setToken(state, payload: String) {
-    state.player.token = payload;
-    localStorage.setItem("player", JSON.stringify(state.player));
+  setToken(state, payload: string) {
+    state.token = payload;
+    localStorage.setItem("token", payload);
   },
   setScore(state, payload: Number) {
-    state.player.score = payload;
+    if (!!state.room && !!state.room.players) {
+      for (let i = 0; i < state.room.players.length; i++) {
+        if (state.room.players[i].id === state.playerId) {
+          state.room.players[i].score = payload;
+          break;
+        }
+      }
+    }
   },
   // PLayer room
   setRoom(state, payload: RoomState) {
