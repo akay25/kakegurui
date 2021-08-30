@@ -29,9 +29,9 @@
       />
     </div>
     <div class="leave-game-button-holder">
-      <va-button size="large" icon="close" color="danger" @click="leaveGame"
-        >Leave Game</va-button
-      >
+      <va-button size="large" icon="close" color="danger" @click="leaveGame">
+        Leave Game
+      </va-button>
     </div>
   </va-sidebar>
 </template>

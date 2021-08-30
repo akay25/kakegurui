@@ -4,33 +4,48 @@
       <arrow-key itemName="TOP_HAT" direction="←" v-model="profilePic.topHat" />
       <arrow-key itemName="EYE_TYPE" direction="←" v-model="profilePic.eye" />
       <arrow-key
-        itemName="CLOTH_COLORS"
+        itemName="FACIAL_HAIR_TYPES"
         direction="←"
-        v-model="profilePic.clothColor"
+        v-model="profilePic.facialHair"
       />
-      <arrow-key itemName="TSHIRT" direction="←" v-model="profilePic.tshirt" />
+      <arrow-key
+        itemName="CLOTHE_TYPES"
+        direction="←"
+        v-model="profilePic.clotheType"
+      />
     </div>
     <avataaars
       ref="my_avataar"
       circleColor="#fca311"
-      clotheType="GraphicShirt"
-      eyebrowType="Default"
-      facialHairType="blank"
+      accessoriesType="Blank"
+      :topType="profilePic.topHat"
+      :topColor="profilePic.topHatColor"
+      :hairColor="profilePic.hairColor"
+      :eyebrowType="profilePic.eyebrowType"
       :eyeType="profilePic.eye"
+      :facialHairType="profilePic.facialHair"
+      :facialHairColor="profilePic.hairColor"
+      :mouthType="profilePic.mouthType"
+      :skinColor="profilePic.skinColor"
+      :clotheType="profilePic.clotheType"
+      :clothColor="profilePic.clothColor"
       :graphicType="profilePic.tshirt"
       :clotheColor="profilePic.clothColor"
-      :topType="profilePic.topHat"
     >
     </avataaars>
     <div class="side-buttons">
       <arrow-key itemName="TOP_HAT" direction="→" v-model="profilePic.topHat" />
       <arrow-key itemName="EYE_TYPE" direction="→" v-model="profilePic.eye" />
       <arrow-key
-        itemName="CLOTH_COLORS"
+        itemName="FACIAL_HAIR_TYPES"
         direction="→"
-        v-model="profilePic.clothColor"
+        v-model="profilePic.facialHair"
       />
-      <arrow-key itemName="TSHIRT" direction="→" v-model="profilePic.tshirt" />
+      <arrow-key
+        itemName="CLOTHE_TYPES"
+        direction="→"
+        v-model="profilePic.clotheType"
+      />
     </div>
   </div>
 </template>
@@ -38,7 +53,19 @@
 <script>
 import _ from "lodash";
 import Avataaars from "vuejs-avataaars/src/Avataaars.vue";
-import { TOP_HAT, CLOTH_COLORS, TSHIRT, EYE_TYPE } from "./data";
+import {
+  TOP_HAT,
+  CLOTH_COLORS,
+  TSHIRT,
+  EYE_TYPE,
+  TOP_COLORS,
+  HAIR_COLORS,
+  EYEBROW_TYPES,
+  FACIAL_HAIR_TYPES,
+  MOUTH_TYPES,
+  SKIN_COLORS,
+  CLOTHE_TYPES
+} from "./data";
 import ArrowKey from "./ArrowKey.vue";
 const SVGToPNG = require("./SvgToPngConverter");
 
@@ -47,15 +74,28 @@ export default {
   components: { Avataaars, ArrowKey },
   data() {
     return {
-      profilePic: {
-        topHat: _.sample(TOP_HAT),
-        clothColor: _.sample(CLOTH_COLORS),
-        tshirt: _.sample(TSHIRT),
-        eye: _.sample(EYE_TYPE)
-      }
+      profilePic: null
     };
   },
+  created() {
+    this.profilePic = this.generateProfilePic();
+  },
   methods: {
+    generateProfilePic() {
+      return {
+        topHat: _.sample(TOP_HAT),
+        topHatColor: _.sample(TOP_COLORS),
+        hairColor: _.sample(HAIR_COLORS),
+        eyebrowType: _.sample(EYEBROW_TYPES),
+        eye: _.sample(EYE_TYPE),
+        facialHair: _.sample(FACIAL_HAIR_TYPES),
+        mouthType: _.sample(MOUTH_TYPES),
+        skinColor: _.sample(SKIN_COLORS),
+        clotheType: _.sample(CLOTHE_TYPES),
+        clothColor: _.sample(CLOTH_COLORS),
+        tshirt: _.sample(TSHIRT)
+      };
+    },
     async generatePNG() {
       if ("my_avataar" in this.$refs) {
         const pngData = await new SVGToPNG().convertFromInput(

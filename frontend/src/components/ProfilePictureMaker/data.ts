@@ -1,3 +1,95 @@
+export const CLOTHE_TYPES = [
+  "BlazerShirt",
+  "BlazerSweater",
+  "CollarSweater",
+  "GraphicShirt",
+  "Hoodie",
+  "Overall",
+  "ShirtCrewNeck",
+  "ShirtScoopNeck",
+  "ShirtVNeck"
+];
+
+export const EYEBROW_TYPES = [
+  "Angry",
+  "AngryNatural",
+  "Default",
+  "DefaultNatural",
+  "FlatNatural",
+  "RaisedExcited",
+  "RaisedExcitedNatural",
+  "SadConcerned",
+  "SadConcernedNatural",
+  "UnibrowNatural",
+  "UpDown",
+  "UpDownNatural"
+];
+
+export const FACIAL_HAIR_TYPES = [
+  "Blank",
+  "BeardMedium",
+  "BeardLight",
+  "BeardMagestic",
+  "MoustacheFancy",
+  "MoustacheMagnum"
+];
+
+export const HAIR_COLORS = [
+  "Auburn",
+  "Black",
+  "Blonde",
+  "BlondeGolden",
+  "Brown",
+  "BrownDark",
+  "PastelPink",
+  "Platinum",
+  "Red",
+  "SilverGray"
+];
+
+export const MOUTH_TYPES = [
+  "Concerned",
+  "Default",
+  "Disbelief",
+  "Eating",
+  "Grimace",
+  "Sad",
+  "ScreamOpen",
+  "Serious",
+  "Smile",
+  "Tongue",
+  "Twinkle",
+  "Vomit"
+];
+
+export const SKIN_COLORS = [
+  "Tanned",
+  "Yellow",
+  "Pale",
+  "Light",
+  "Brown",
+  "DarkBrown",
+  "Black"
+];
+
+export const TOP_COLORS = [
+  "Black",
+  "Blue01",
+  "Blue02",
+  "Blue03",
+  "Gray01",
+  "Gray02",
+  "Heather",
+  "PastelBlue",
+  "PastelGreen",
+  "PastelOrange",
+  "PastelRed",
+  "PastelYellow",
+  "Pink",
+  "Red",
+  "White"
+];
+
 export const TOP_HAT = [
   "Eyepatch",
   "Hat",
@@ -80,7 +172,14 @@ export const EYE_TYPE = [
 
 export default {
   TOP_HAT,
+  TOP_COLORS,
+  HAIR_COLORS,
+  EYEBROW_TYPES,
+  EYE_TYPE,
+  FACIAL_HAIR_TYPES,
+  MOUTH_TYPES,
+  SKIN_COLORS,
+  CLOTHE_TYPES,
   CLOTH_COLORS,
-  TSHIRT,
-  EYE_TYPE
+  TSHIRT
 };
