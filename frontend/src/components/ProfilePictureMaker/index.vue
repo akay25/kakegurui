@@ -1,52 +1,72 @@
 <template>
-  <div class="profile-pic-maker">
-    <div class="side-buttons">
-      <arrow-key itemName="TOP_HAT" direction="←" v-model="profilePic.topHat" />
-      <arrow-key itemName="EYE_TYPE" direction="←" v-model="profilePic.eye" />
-      <arrow-key
-        itemName="FACIAL_HAIR_TYPES"
-        direction="←"
-        v-model="profilePic.facialHair"
-      />
-      <arrow-key
-        itemName="CLOTHE_TYPES"
-        direction="←"
-        v-model="profilePic.clotheType"
-      />
+  <div>
+    <div class="profile-pic-maker">
+      <div class="side-buttons">
+        <arrow-key
+          itemName="TOP_HAT"
+          direction="←"
+          v-model="profilePic.topHat"
+        />
+        <arrow-key itemName="EYE_TYPE" direction="←" v-model="profilePic.eye" />
+        <arrow-key
+          itemName="FACIAL_HAIR_TYPES"
+          direction="←"
+          v-model="profilePic.facialHair"
+        />
+        <arrow-key
+          itemName="CLOTHE_TYPES"
+          direction="←"
+          v-model="profilePic.clotheType"
+        />
+      </div>
+
+      <avataaars
+        ref="my_avataar"
+        circleColor="#fca311"
+        accessoriesType="Blank"
+        :topType="profilePic.topHat"
+        :topColor="profilePic.topHatColor"
+        :hairColor="profilePic.hairColor"
+        :eyebrowType="profilePic.eyebrowType"
+        :eyeType="profilePic.eye"
+        :facialHairType="profilePic.facialHair"
+        :facialHairColor="profilePic.hairColor"
+        :mouthType="profilePic.mouthType"
+        :skinColor="profilePic.skinColor"
+        :clotheType="profilePic.clotheType"
+        :clothColor="profilePic.clothColor"
+        :graphicType="profilePic.tshirt"
+        :clotheColor="profilePic.clothColor"
+      >
+      </avataaars>
+
+      <div class="side-buttons">
+        <arrow-key
+          itemName="TOP_HAT"
+          direction="→"
+          v-model="profilePic.topHat"
+        />
+        <arrow-key itemName="EYE_TYPE" direction="→" v-model="profilePic.eye" />
+        <arrow-key
+          itemName="FACIAL_HAIR_TYPES"
+          direction="→"
+          v-model="profilePic.facialHair"
+        />
+        <arrow-key
+          itemName="CLOTHE_TYPES"
+          direction="→"
+          v-model="profilePic.clotheType"
+        />
+      </div>
     </div>
-    <avataaars
-      ref="my_avataar"
-      circleColor="#fca311"
-      accessoriesType="Blank"
-      :topType="profilePic.topHat"
-      :topColor="profilePic.topHatColor"
-      :hairColor="profilePic.hairColor"
-      :eyebrowType="profilePic.eyebrowType"
-      :eyeType="profilePic.eye"
-      :facialHairType="profilePic.facialHair"
-      :facialHairColor="profilePic.hairColor"
-      :mouthType="profilePic.mouthType"
-      :skinColor="profilePic.skinColor"
-      :clotheType="profilePic.clotheType"
-      :clothColor="profilePic.clothColor"
-      :graphicType="profilePic.tshirt"
-      :clotheColor="profilePic.clothColor"
-    >
-    </avataaars>
-    <div class="side-buttons">
-      <arrow-key itemName="TOP_HAT" direction="→" v-model="profilePic.topHat" />
-      <arrow-key itemName="EYE_TYPE" direction="→" v-model="profilePic.eye" />
-      <arrow-key
-        itemName="FACIAL_HAIR_TYPES"
-        direction="→"
-        v-model="profilePic.facialHair"
-      />
-      <arrow-key
-        itemName="CLOTHE_TYPES"
-        direction="→"
-        v-model="profilePic.clotheType"
-      />
-    </div>
+    <va-icon
+      class="icon-button"
+      style="align-self: center;"
+      name="fa fa-refresh"
+      color="#FCA311"
+      :size="30"
+      @click="refreshProfile"
+    />
   </div>
 </template>
 
@@ -81,6 +101,9 @@ export default {
     this.profilePic = this.generateProfilePic();
   },
   methods: {
+    refreshProfile() {
+      this.profilePic = this.generateProfilePic();
+    },
     generateProfilePic() {
       return {
         topHat: _.sample(TOP_HAT),
@@ -129,5 +152,17 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+}
+
+.icon-button {
+  padding: 2px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  transition: all 0.4s;
+
+  &:hover {
+    border: 2px solid #e5e5e5;
+  }
 }
 </style>
