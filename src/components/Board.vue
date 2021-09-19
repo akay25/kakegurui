@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isGameRunning">
+  <div ref="gameBoard" v-if="isGameRunning" style="border: 1px solid green;">
     <transition-group name="flip-list" tag="div">
       <div
         v-for="index in cardsIndexArray"
@@ -30,7 +30,7 @@ import { mapGetters, mapMutations } from "vuex";
 import FLIP_UP_FILE from "@/assets/sounds/flip_up.wav";
 import WRONG_CARD_FILE from "@/assets/sounds/wrong_card.wav";
 import REMOVE_CARDS_FILE from "@/assets/sounds/remove_cards.wav";
-import { CARD_RATIO, GAME_VOLUME } from "@/data/constants";
+import { CARD_COUNT_IN_ROW, CARD_RATIO, GAME_VOLUME } from "@/data/constants";
 
 export default {
   name: "board",
