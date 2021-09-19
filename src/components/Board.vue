@@ -1,5 +1,5 @@
 <template>
-  <div ref="gameBoard" v-if="isGameRunning" style="border: 1px solid green;">
+  <div v-if="isGameRunning">
     <transition-group name="flip-list" tag="div">
       <div
         v-for="index in cardsIndexArray"
