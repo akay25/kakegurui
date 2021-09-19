@@ -6,7 +6,7 @@
       border: `2px solid ${isMe ? '#FCA311' : '#666060'}`
     }"
   >
-    <img style="width: 100%; height: 100%;" :src="pngData" v-if="!!pngData" />
+    <!-- <img style="width: 100%; height: auto;" :src="pngData" v-if="!!pngData" /> -->
     <avataaars
       :ref="`profile_${id}`"
       circleColor="#fca311"
