@@ -48,6 +48,7 @@ export default {
 .dummy-image-container {
   display: flex;
   justify-content: center;
+  margin: 5px;
   align-items: center;
   border: 1px solid #e5e5e5;
   border-radius: 8px;
