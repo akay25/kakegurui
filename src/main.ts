@@ -40,6 +40,7 @@ app.use(
   new VueSocketIO({
     debug: process.env.VUE_APP_ENV === "DEV",
     connection: SocketIO(process.env.VUE_APP_SOCKET_ENDPOINT, {
+      path: process.env.VUE_APP_ENV === "PROD" ? "/api/socket.io" : "/",
       withCredentials: true,
       extraHeaders: {
         authorization: store.getters.token
