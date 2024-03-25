@@ -39,7 +39,7 @@ loadFromLocalStorage();
 app.use(
   new VueSocketIO({
     debug: process.env.VUE_APP_ENV === "DEV",
-    connection: SocketIO(process.env.VUE_APP_SOCKET_ENPOINT, {
+    connection: SocketIO(process.env.VUE_APP_SOCKET_ENDPOINT, {
       withCredentials: true,
       extraHeaders: {
         authorization: store.getters.token
