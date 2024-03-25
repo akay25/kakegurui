@@ -44,7 +44,7 @@ app.use(
       extraHeaders: {
         authorization: store.getters.token
       },
-      autoConnect: false
+      autoConnect: true
     })
   })
 );
